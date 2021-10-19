@@ -51,7 +51,7 @@ class ZimbraUser:
         self.session_data.username = username
 
         cookies = {
-            'ZM_TEST': 'true',  # keine Ahnung wofür der Cookie gebraucht wird
+            'ZM_TEST': 'true',  # determine if cookies are enabled
         }
 
         data = {
