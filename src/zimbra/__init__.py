@@ -4,6 +4,7 @@ from dataclasses import dataclass, astuple
 import uuid
 import pkg_resources
 import re
+import random,string
 
 import requests
 
@@ -161,7 +162,7 @@ class ZimbraUser:
         if crumb is None:
             return None
 
-        boundary = "---------------------------12839943797206379423783756262"
+        boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
 
         headers = {**self._headers,
                    'Content-Type': f'multipart/form-data; boundary={boundary}',
