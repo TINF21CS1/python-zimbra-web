@@ -1,3 +1,18 @@
 from zimbra import ZimbraUser
+import os
+import pytest
+import uuid
 
-pass
+
+def test_failing_authentication():
+    username = os.environ["ZIMBRA_USERNAME"]
+    password = "INCORRECT123"
+    user = ZimbraUser()
+    assert not user.login(username, password)
+    assert not user.authenticated
+
+def test_send_email(zimbra_user: ZimbraUser):
+    identifier = uuid.uuid4()
+    status_code = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de", f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}")
+    # TODO: better testing to check if the email was sent
+    assert status_code == 200
