@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Dict
 from dataclasses import dataclass, astuple
 import uuid
 import pkg_resources
@@ -25,6 +25,14 @@ class ZimbraUser:
     """
     This class represent a single user instance on the Zimbra Web Interface.
     """
+    _headers: Dict[str, str] = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-GB,en;q=0.5',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Origin': 'https://studgate.dhbw-mannheim.de',
+        'Referer': 'https://studgate.dhbw-mannheim.de/',
+    }
 
     def __init__(self):
         self.session_data = SessionData()
@@ -46,15 +54,6 @@ class ZimbraUser:
             'ZM_TEST': 'true',  # keine Ahnung wofür der Cookie gebraucht wird
         }
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-GB,en;q=0.5',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Origin': 'https://studgate.dhbw-mannheim.de',
-            'Referer': 'https://studgate.dhbw-mannheim.de/',
-        }
-
         data = {
             'loginOp': 'login',
             'username': username,
@@ -64,7 +63,7 @@ class ZimbraUser:
         }
 
         response = requests.post(
-            'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=headers, data=data, allow_redirects=False)
+            'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
             return True
@@ -93,21 +92,6 @@ class ZimbraUser:
             'JSESSIONID': self.session_data.jsessionid
         }
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'DNT': '1',
-            'Connection': 'keep-alive',
-            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search?mesg=welcome&init=true',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-User': '?1',
-            'Sec-GPC': '1',
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -116,7 +100,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=headers, params=params, cookies=cookies)
+        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
 
         crumb = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
         if len(crumb) == 0:
@@ -134,21 +118,6 @@ class ZimbraUser:
             'ZM_AUTH_TOKEN': self.session_data.token,
         }
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'DNT': '1',
-            'Connection': 'keep-alive',
-            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search?mesg=welcome&init=true',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-User': '?1',
-            'Sec-GPC': '1',
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -157,7 +126,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=headers, params=params, cookies=cookies)
+        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
         self.session_data.jsessionid = response.cookies["JSESSIONID"]
 
     def send_mail(self, to: str, subject: str, body: str,
@@ -194,23 +163,10 @@ class ZimbraUser:
 
         boundary = "---------------------------12839943797206379423783756262"
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Content-Type': f'multipart/form-data; boundary={boundary}',
-            'Origin': 'https://studgate.dhbw-mannheim.de',
-            'DNT': '1',
-            'Connection': 'keep-alive',
-            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid=odf7pguzq1h?si=0&so=0&sc=659&st=message&action=compose',
-            'Cookie': f'ZM_TEST=true; ZM_AUTH_TOKEN={self.session_data.token}; JSESSIONID={self.session_data.jsessionid}',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-User': '?1',
-            'Sec-GPC': '1'
-        }
+        headers = {**self._headers,
+                   'Content-Type': f'multipart/form-data; boundary={boundary}',
+                   'Cookie': f'ZM_TEST=true; ZM_AUTH_TOKEN={self.session_data.token}; JSESSIONID={self.session_data.jsessionid}',
+                   }
 
         with open(pkg_resources.resource_filename(__name__, "templates/message.txt")) as f:
             raw = f.read()
