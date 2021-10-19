@@ -212,7 +212,7 @@ class ZimbraUser:
             'Sec-GPC': '1'
         }
 
-        with open(pkg_resources.resource_filename(__name__, "templates/message.txt"), newline="") as f:
+        with open(pkg_resources.resource_filename(__name__, "templates/message.txt"), newline="\r\n") as f:
             raw = f.read()
 
         payload = raw.format(boundary=boundary, to=to, subject=subject, body=body, senduid=senduid, username=self.session_data.username,
