@@ -3,6 +3,7 @@ import os
 from zimbra import ZimbraUser
 import pytest
 
+
 @pytest.fixture(scope="session")
 def zimbra_user() -> ZimbraUser:
     username = os.environ["ZIMBRA_USERNAME"]
