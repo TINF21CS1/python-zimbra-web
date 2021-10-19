@@ -13,7 +13,7 @@ def test_failing_authentication():
 
 def test_send_email(zimbra_user: ZimbraUser):
     identifier = uuid.uuid4()
-    status_code = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
-                                        f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}")
-    # TODO: better testing to check if the email was sent
-    assert status_code == 200
+    response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                     f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}")
+    assert response.status_code == 200
+    assert "Ihre Mail wurde gesendet" in response.text

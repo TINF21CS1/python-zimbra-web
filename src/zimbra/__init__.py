@@ -2,14 +2,18 @@ import logging
 from typing import Optional
 from dataclasses import dataclass, astuple
 import uuid
-from http import HTTPStatus
+import pkg_resources
+import re
 
 import requests
+
+__version__ = '0.1'
 
 
 @dataclass
 class SessionData:
     token: Optional[str] = None
+    jsessionid: Optional[str] = None
     username: Optional[str] = None
 
     def is_valid(self) -> bool:
@@ -63,7 +67,7 @@ class ZimbraUser:
             'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
-            return self.authenticated
+            return True
         else:
             if "The username or password is incorrect" in response.text:
                 logging.error(
@@ -72,8 +76,93 @@ class ZimbraUser:
             logging.error(f"Failed login attempt for user {username}")
             return False
 
+    def get_crumb(self) -> Optional[str]:
+        """
+        Gets a valid crumb to send an email
+
+            Returns:
+                Optional[str]: A crumb if authenticated, None otherwise
+        """
+
+        if not self.authenticated:
+            return None
+
+        cookies = {
+            'ZM_TEST': 'true',
+            'ZM_AUTH_TOKEN': self.session_data.token,
+            'JSESSIONID': self.session_data.jsessionid
+        }
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search?mesg=welcome&init=true',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Sec-GPC': '1',
+        }
+
+        params = (
+            ('si', '0'),
+            ('so', '0'),
+            ('sc', '709'),
+            ('st', 'message'),
+            ('action', 'compose'),
+        )
+
+        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=headers, params=params, cookies=cookies)
+
+        crumb = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
+        if len(crumb) == 0:
+            return None
+        else:
+            return str(crumb[0])
+
+    def refresh_session_id(self):
+        """
+        Sets a new session id for the current session.
+        """
+
+        cookies = {
+            'ZM_TEST': 'true',
+            'ZM_AUTH_TOKEN': self.session_data.token,
+        }
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search?mesg=welcome&init=true',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Sec-GPC': '1',
+        }
+
+        params = (
+            ('si', '0'),
+            ('so', '0'),
+            ('sc', '709'),
+            ('st', 'message'),
+            ('action', 'compose'),
+        )
+
+        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=headers, params=params, cookies=cookies)
+        self.session_data.jsessionid = response.cookies["JSESSIONID"]
+
     def send_mail(self, to: str, subject: str, body: str,
-                  cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "", messageid: Optional[str] = ""):
+                  cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
+                  messageid: Optional[str] = "") -> Optional[requests.Response]:
         """
         Sends an email as the current user.
 
@@ -91,66 +180,48 @@ class ZimbraUser:
 
 
             Returns:
-                status_code (int): The status code of the SendMailRequest
+                Optional[Response]: The response from the web interface, None on failure
         """
         if not self.session_data.is_valid():
-            return HTTPStatus.FORBIDDEN
+            return None
 
         # generating uique senduid for every email.
         senduid = uuid.uuid4()
+        crumb = self.get_crumb()
 
-        boundary = "----WebKitFormBoundary2p5o8cSRRkhZkiza"
+        if crumb is None:
+            return None
 
-        cookies = {
-            'ZM_TEST': 'true',
-            'ZM_AUTH_TOKEN': self.session_data.token,
-        }
+        boundary = "---------------------------12839943797206379423783756262"
 
         headers = {
-            'Host': 'studgate.dhbw-mannheim.de',
-            'Cache-Control': 'max-age=0',
-            'Sec-Ch-Ua': '"Chromium";v="93", " Not;A Brand";v="99"',
-            'Sec-Ch-Ua-Mobile': '?0',
-            'Sec-Ch-Ua-Platform': '"Windows"',
-            'Upgrade-Insecure-Requests': '1',
-            'Origin': 'https://studgate.dhbw-mannheim.de',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
             'Content-Type': f'multipart/form-data; boundary={boundary}',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-User': '?1',
+            'Origin': 'https://studgate.dhbw-mannheim.de',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid=odf7pguzq1h?si=0&so=0&sc=659&st=message&action=compose',
+            'Cookie': f'ZM_TEST=true; ZM_AUTH_TOKEN={self.session_data.token}; JSESSIONID={self.session_data.jsessionid}',
+            'Upgrade-Insecure-Requests': '1',
             'Sec-Fetch-Dest': 'document',
-            'Referer': 'https://studgate.dhbw-mannheim.de/zimbra/h/search?si=0&so=0&sc=178&sfi=5&st=message&action=compose',
-            'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Connection': 'close',
-            'Content-Length': '3845',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Sec-GPC': '1'
         }
 
-        params = (
-            ('si', '0'),
-            ('so', '0'),
-            ('sc', '178'),
-            ('sfi', '5'),
-            ('st', 'message'),
-            ('action', 'compose'),
-        )
+        with open(pkg_resources.resource_filename(__name__, "templates/message.txt"), newline="") as f:
+            raw = f.read()
 
-        raw = '{boundary}\n\nContent-Disposition: form-data; name="actionSend"\n\n\n\nSenden\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="fileUpload"; filename=""\n\nContent-Type: application/octet-stream\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="to"\n\n\n\n{to}\n\n{boundary}\n\nContent-Disposition: form-data; name="cc"\n\n\n\n{cc}\n\n{boundary}\n\nContent-Disposition: form-data; name="bcc"\n\n\n\n{bcc}\n\n{boundary}\n\nContent-Disposition: form-data; name="subject"\n\n\n\n{subject}\n\n{boundary}\n\nContent-Disposition: form-data; name="originalAttachment"\n\n\n\n2,true\n\n{boundary}\n\nContent-Disposition: form-data; name="body"\n\n{body}\n\n{boundary}\n\nContent-Disposition: form-data; name="bodyText"\n\n\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="sendUID"\n\n\n\n{senduid}\n\n{boundary}\n\nContent-Disposition: form-data; name="replyto"\n\n\n\n{replyto}\n\n{boundary}\n\nContent-Disposition: form-data; name="from"\n\n\n\n<{username}@student.dhbw-mannheim.de>\n\n{boundary}\n\nContent-Disposition: form-data; name="inreplyto"\n\n\n\n{inreplyto}\n\n{boundary}\n\nContent-Disposition: form-data; name="messageid"\n\n\n\n{messageid}\n\n{boundary}\n\nContent-Disposition: form-data; name="compNum"\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="instCompNum"\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="replytype"\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="inviteReplyVerb"\n\n\n\n\n\n{boundary}\n\nContent-Disposition: form-data; name="inviteReplyInst"\n\n\n\n0\n\n{boundary}\n\nContent-Disposition: form-data; name="inviteReplyAllDay"\n\n\n\nfalse\n\n{boundary}\n\nContent-Disposition: form-data; name="crumb"\n\n\n\nfe7f0443268a76d824738c329c1f45c6\n\n{boundary}\n\nContent-Disposition: form-data; name="draftid"\n\n\n\n\n\n{boundary}--\n\n'  # noqa: E501
+        payload = raw.format(boundary=boundary, to=to, subject=subject, body=body, senduid=senduid, username=self.session_data.username,
+                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=crumb)
 
-        data = raw.format(boundary=boundary, username=self.session_data.username, to=to, cc=cc, bcc=bcc, inreplyto=inreplyto, replyto=replyto, senduid=senduid,
-                          messageid=messageid, subject=subject, body=body)
+        url = f"https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
+        response = requests.post(url, headers=headers, data=payload)
 
-        logging.debug(
-            f"REQUEST:\n {headers} \n {params} \n {cookies} \n {data}")
-
-        response = requests.post('https://studgate.dhbw-mannheim.de/zimbra/h/search',
-                                 headers=headers, params=params, cookies=cookies, data=data)
-
-        logging.debug(f"RESPONSE:\n {response.text}")
-
-        return response.status_code
+        return response
 
     @property
     def authenticated(self) -> bool:

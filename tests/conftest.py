@@ -10,5 +10,6 @@ def zimbra_user() -> ZimbraUser:
     password = os.environ["ZIMBRA_PASSWORD"]
     user = ZimbraUser()
     user.login(username, password)
+    user.refresh_session_id()
     assert user.authenticated
     return user
