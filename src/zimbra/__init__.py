@@ -215,7 +215,7 @@ class ZimbraUser:
         with open(pkg_resources.resource_filename(__name__, "templates/message.txt")) as f:
             raw = f.read()
             if "\r\n" not in raw:
-                raw = raw.replace("\n", "\r\n")  
+                raw = raw.replace("\n", "\r\n")
 
         payload = raw.format(boundary=boundary, to=to, subject=subject, body=body, senduid=senduid, username=self.session_data.username,
                              cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=crumb)
