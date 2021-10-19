@@ -1,0 +1,153 @@
+POST /zimbra/h/search;jsessionid=nptp2eecf40y?si=0&so=0&sc=521&st=message&action=compose HTTP/1.1
+Host: studgate.dhbw-mannheim.de
+Cookie: ZM_TEST=true; ZM_AUTH_TOKEN=#####################################################################################################################################################################################################################; JSESSIONID=############
+Content-Length: 3564
+Cache-Control: max-age=0
+Sec-Ch-Ua: "Chromium";v="93", " Not;A Brand";v="99"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Windows"
+Upgrade-Insecure-Requests: 1
+Origin: https://studgate.dhbw-mannheim.de
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryC7I0LFcBqDDiAOzR
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid=nptp2eecf40y?si=0&so=0&sc=521&st=message&action=compose
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename="Test.txt"
+Content-Type: text/plain
+
+Testinhalt
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="fileUpload"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="actionAttachDone"
+
+Fertig
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="to"
+
+julian.lemmerich@stud.tu-darmstadt.de
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="sendUID"
+
+d31dc621-ef5b-4da9-ab49-3ac8bba530eb
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="cc"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="bcc"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="subject"
+
+Zimbra html web test
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="body"
+
+Dies ist ein Text mit Anhang
+
+--
+
+Julian Lemmerich
+Cyber Security Student
+DHBW Mannheim TINF21CS1
+jle@cirosec.de
++49 7131 59455-26
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="replyto"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="from"
+
+"Julian Lemmerich" <s212689@student.dhbw-mannheim.de>
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="inreplyto"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="messageid"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="replytype"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="draftid"
+
+304
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="inviteReplyVerb"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="inviteReplyInst"
+
+0
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="inviteReplyAllDay"
+
+false
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="compNum"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR
+Content-Disposition: form-data; name="instCompNum"
+
+
+------WebKitFormBoundaryC7I0LFcBqDDiAOzR--

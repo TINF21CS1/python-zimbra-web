@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "22284cff-84c0-43ff-b4e9-783775aaa736",
+		"name": "Zimbra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" ?>\r\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\">\r\n    <soap:Header>\r\n        <context xmlns=\"urn:zimbra\">\r\n            <format type=\"xml\"/>\r\n        </context>\r\n    </soap:Header>\r\n    <soap:Body>\r\n        <AuthRequest xmlns=\"urn:zimbraAccount\">\r\n            <account by=\"name\">{{username}}</account>\r\n            <password>{{password}}</password>\r\n        </AuthRequest>\r\n    </soap:Body>\r\n</soap:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://studgate.dhbw-mannheim.de/service/soap",
+					"protocol": "https",
+					"host": [
+						"studgate",
+						"dhbw-mannheim",
+						"de"
+					],
+					"path": [
+						"service",
+						"soap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Mail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" ?>\r\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\">\r\n    <soap:Header>\r\n        <context xmlns=\"urn:zimbra\">\r\n            <format type=\"xml\"/>\r\n            <authToken>{{auth_token}}</authToken>\r\n        </context>\r\n    </soap:Header>\r\n    <soap:Body>\r\n        <SendMsgRequest xmlns=\"urn:zimbraMail\">\r\n            <m>\r\n                <e a=\"{{username}}@student.dhbw-mannheim.de\" t=\"f\" p=\"Frederik Reiter\"/>\r\n                <e a=\"postman@frederikreiter.de\" t=\"t\"/>\r\n                <su>Postman Message</su>\r\n                <mp ct=\"multipart/mixed\">\r\n                    <mp ct=\"text/plain\" content=\"Anhang?\" cd=\"form-data\" name=\"fileUpload\" filename=\"test.txt\"/>\r\n                    <mp ct=\"text/plain\" content=\"Hello from postman!\"/>\r\n                </mp>\r\n            </m>\r\n        </SendMsgRequest>\r\n    </soap:Body>\r\n</soap:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://studgate.dhbw-mannheim.de/service/soap",
+					"protocol": "https",
+					"host": [
+						"studgate",
+						"dhbw-mannheim",
+						"de"
+					],
+					"path": [
+						"service",
+						"soap"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		}
+	]
+}

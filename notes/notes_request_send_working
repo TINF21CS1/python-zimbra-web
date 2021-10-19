@@ -1,0 +1,108 @@
+POST /zimbra/h/search?si=0&so=0&sc=177&sfi=5&st=message&action=compose HTTP/1.1
+Host: studgate.dhbw-mannheim.de
+Cookie: ZM_TEST=true; ZM_AUTH_TOKEN=#####################################################################################################################################################################################################################; JSESSIONID=#############
+Content-Length: 2228
+Cache-Control: max-age=0
+Sec-Ch-Ua: "Chromium";v="93", " Not;A Brand";v="99"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Windows"
+Upgrade-Insecure-Requests: 1
+Origin: https://studgate.dhbw-mannheim.de
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryks3vA3jNzjijpPxr
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://studgate.dhbw-mannheim.de/zimbra/h/search?si=0&so=0&sc=177&sfi=5&st=message&action=compose
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="actionSend"
+
+Senden
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="to"
+
+<jm.lemmerich@gmail.com>, 
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="cc"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="bcc"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="subject"
+
+Test 9
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="body"
+
+Test 9
+
+--
+
+Julian Lemmerich
+Cyber Security Student
+DHBW Mannheim TINF21CS1
+jle@cirosec.de
++49 7131 59455-26
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="sendUID"
+
+02c906e7-7595-455d-9d39-fd57f6b391f5
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="replyto"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="from"
+
+"Julian Lemmerich Burp" <s212689@student.dhbw-mannheim.de>
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="inreplyto"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="messageid"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="compNum"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="instCompNum"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="replytype"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="inviteReplyVerb"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="inviteReplyInst"
+
+0
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="inviteReplyAllDay"
+
+false
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="crumb"
+
+fe7f0443268a76d824738c329c1f45c6
+------WebKitFormBoundaryks3vA3jNzjijpPxr
+Content-Disposition: form-data; name="draftid"
+
+
+------WebKitFormBoundaryks3vA3jNzjijpPxr--

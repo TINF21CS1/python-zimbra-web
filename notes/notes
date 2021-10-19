@@ -1,0 +1,16 @@
+sendUID muss unique sein, scheint aber keine checksum oder sonstiges zu verwenden. In folgendem Format:
+02c906e7-7595-455d-9d39-fd57f6b391fc
+
+Draftid is not necessary, but maybe for uploads?
+
+die WebKitFormBoundary hat einen random string hinten dran, der scheint aber keine Bedeutung zu haben. Man kann sich einfach random einen generieren (siehe https://stackoverflow.com/a/60371485) und solange man das im header festlegt kann man immer die gleiche verwenden. Diese muss sich auch nicht unterscheiden zwischen nachrichten, man könnte sie also hardcoden.
+
+
+
+---
+
+Now for some slimming down:
+
+crumb seems to be neccesary but not unique.
+
+content length header ist überflüssig, also weglassen um später fehler zu verhindern
