@@ -191,7 +191,7 @@ class ZimbraUser:
 
     def send_mail(self, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
-                  messageid: Optional[str] = "") -> Optional[str]:
+                  messageid: Optional[str] = "") -> str:
         """
         Sends an email as the current user.
 
@@ -209,10 +209,10 @@ class ZimbraUser:
 
 
             Returns:
-                Optional[str]: The response status from the web interface, "Unknown Error" when no status is parsed
+                str: The response status from the web interface, "Unknown Error" when no status is parsed
         """
         if not self.authenticated:
-            return None
+            return "Not Authenticated"
 
         # generating uique senduid for every email.
         senduid = uuid.uuid4()
