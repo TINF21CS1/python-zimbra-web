@@ -182,15 +182,14 @@ class ZimbraUser:
         url = f"https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)
 
-        #finding the status in the response
+        # finding the status in the response
         zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)
         if len(zresponsestatus) == 0:
             logging.error("Website content returned no status.\n{response}")
             return "Unknown Error"
         else:
             logging.info(zresponsestatus[0])
-            return(zresponsestatus[0])
-        
+            return(str(zresponsestatus[0]))
 
     @property
     def authenticated(self) -> bool:
