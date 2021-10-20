@@ -6,7 +6,7 @@ import uuid
 def test_failing_authentication():
     username = os.environ["ZIMBRA_USERNAME"]
     password = "INCORRECT123"
-    user = ZimbraUser()
+    user = ZimbraUser(url="https://studgate.dhbw-mannheim.de")
     assert not user.login(username, password)
     assert not user.authenticated
 
