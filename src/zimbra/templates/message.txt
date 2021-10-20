@@ -37,7 +37,7 @@ Content-Disposition: form-data; name="replyto"
 --{boundary}
 Content-Disposition: form-data; name="from"
 
-<{username}@student.dhbw-mannheim.de>
+{from_header}
 --{boundary}
 Content-Disposition: form-data; name="inreplyto"
 

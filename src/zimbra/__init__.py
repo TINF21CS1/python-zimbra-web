@@ -32,12 +32,15 @@ class ZimbraUser:
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
         'Accept-Language': 'en-GB,en;q=0.5',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Origin': 'https://studgate.dhbw-mannheim.de',
-        'Referer': 'https://studgate.dhbw-mannheim.de/',
     }
 
-    def __init__(self):
+    def __init__(self, url: str):
+        """
+        Parameters:
+            url - The URL on which zimbra is hosted (i.e. where the login page is located)
+        """
         self.session_data = SessionData()
+        self.url = url
 
     def login(self, username: str, password: str) -> bool:
         """
@@ -65,7 +68,7 @@ class ZimbraUser:
         }
 
         response = requests.post(
-            'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
+            f'{self.url}/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
             self.refresh_session_id()
@@ -103,7 +106,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
 
         crumb = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
         if len(crumb) == 0:
@@ -129,16 +132,17 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get('https://studgate.dhbw-mannheim.de/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
         self.session_data.jsessionid = response.cookies["JSESSIONID"]
 
-    def send_mail(self, to: str, subject: str, body: str,
+    def send_mail(self, from_header: str, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
                   messageid: Optional[str] = "") -> Optional[requests.Response]:
         """
         Sends an email as the current user.
 
             Parameters:
+                from_header (str): Apparent sender
                 to (str): Recipient
                 subject (str): Email Subject Header
                 body (str): plain/text email body
@@ -176,10 +180,10 @@ class ZimbraUser:
             if "\r\n" not in raw:
                 raw = raw.replace("\n", "\r\n")
 
-        payload = raw.format(boundary=boundary, to=to, subject=subject, body=body, senduid=senduid, username=self.session_data.username,
+        payload = raw.format(boundary=boundary, from_header=from_header, to=to, subject=subject, body=body, senduid=senduid,
                              cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=crumb)
 
-        url = f"https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
+        url = f"{self.url}/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)
 
         return response
