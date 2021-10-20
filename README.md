@@ -14,6 +14,10 @@ user.login("s000000", "hunter2")
 user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
 ```
 
+## Known Limitations
+
+* Emoji is not supported, even though other UTF-8 characters are. See Issue #3
+
 ## Contributing
 
 1. Best practice is to develop in a python3.8 virtual env: `python3.8 -m venv env`, `source env/bin/activate` (Unix) or `env\Scripts\activate.ps1` (Windows)
