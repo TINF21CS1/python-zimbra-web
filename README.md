@@ -9,9 +9,9 @@
 ```python
 from zimbra import ZimbraUser
 
-user = ZimbraUser()
+user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
-user.send_mail("receiver@example.com", "subject", "body")
+user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
 ```
 
 ## Contributing

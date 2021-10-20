@@ -8,8 +8,7 @@ import pytest
 def zimbra_user() -> ZimbraUser:
     username = os.environ["ZIMBRA_USERNAME"]
     password = os.environ["ZIMBRA_PASSWORD"]
-    user = ZimbraUser()
-    user.login(username, password)
-    user.refresh_session_id()
+    user = ZimbraUser(url="https://studgate.dhbw-mannheim.de")
+    assert user.login(username, password)
     assert user.authenticated
     return user
