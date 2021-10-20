@@ -49,9 +49,9 @@ class ZimbraUser:
 
     methods:
     ```python
-    # Login as a user. Returns True on success: 
+    # Login as a user. Returns True on success:
     user.login(username: str, password: str) -> bool
-    
+
     # Gets a new JSESSIONID Cookie for the current user:
     user.refresh_session_id() -> None
 
@@ -63,8 +63,8 @@ class ZimbraUser:
 
     # Send an email from the current user account:
     send_mail(from_header: str, to: str, subject: str, body: str,
-              cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", 
-              inreplyto: Optional[str] = "", messageid: Optional[str] = "") 
+              cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "",
+              inreplyto: Optional[str] = "", messageid: Optional[str] = "")
               -> Optional[requests.Response]
     ```
 
