@@ -25,6 +25,12 @@ __version__ = '1.0.1'
 
 
 @dataclass
+class Response:
+    success: bool = False
+    message: str = ""
+
+
+@dataclass
 class SessionData:
     token: Optional[str] = None
     jsessionid: Optional[str] = None
@@ -191,7 +197,7 @@ class ZimbraUser:
 
     def send_mail(self, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
-                  messageid: Optional[str] = "") -> str:
+                  messageid: Optional[str] = "") -> Response:
         """
         Sends an email as the current user.
 
@@ -212,7 +218,7 @@ class ZimbraUser:
                 str: The response status from the web interface, "Unknown Error" when no status is parsed
         """
         if not self.authenticated:
-            return "Not Authenticated"
+            return Response(False, "Not Authenticated")
 
         # generating uique senduid for every email.
         senduid = uuid.uuid4()
@@ -239,10 +245,11 @@ class ZimbraUser:
         zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)
         if len(zresponsestatus) == 0:
             logging.error("Website content returned no status.\n{response}")
-            return "Unknown Error"
+            return Response(False, "Unknown Error")
         else:
             logging.info(zresponsestatus[0])
-            return(str(zresponsestatus[0]))
+            success = (str(zresponsestatus[0])) == "Ihre Mail wurde gesendet."
+            return Response(success, (str(zresponsestatus[0])))
 
     @property
     def authenticated(self) -> bool:
