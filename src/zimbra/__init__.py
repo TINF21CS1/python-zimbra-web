@@ -64,11 +64,12 @@ class ZimbraUser:
             'client': 'preferred'
         }
 
-        response = requests.post(
-            'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
+        response = requests.post('https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
             self.refresh_session_id()
+            logging.info("Login successfull.")
+            logging.debug(f"ZM_AUTH_TOKEN: {self.session_data.token}\nJSESSIONID: {self.session_data.jsessionid}")
             return True
         else:
             if "The username or password is incorrect" in response.text:
