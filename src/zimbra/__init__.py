@@ -181,7 +181,9 @@ class ZimbraUser:
         url = f"https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)
 
+        #finding the status in the response
         zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)[0]
+        logging.info(zresponsestatus)
 
         return zresponsestatus
 
