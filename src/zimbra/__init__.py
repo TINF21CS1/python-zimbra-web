@@ -7,7 +7,7 @@ Usage example:
 >>> from zimbra import ZimbraUser
 >>> user = ZimbraUser("https://myzimbra.server")
 >>> user.login("s000000", "hunter2")
->>> user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
+>>> user.send_mail(to="receiver@example.com", subject="subject", body="body")
 ```
 """
 import logging
@@ -18,7 +18,6 @@ import pkg_resources
 import re
 import random
 import string
-import email.utils
 
 import requests
 
@@ -30,6 +29,8 @@ class SessionData:
     token: Optional[str] = None
     jsessionid: Optional[str] = None
     username: Optional[str] = None
+    from_address: Optional[str] = None
+    crumb: Optional[str] = None
 
     def is_valid(self) -> bool:
         """Returns True if no attributes are None"""
@@ -44,7 +45,7 @@ class ZimbraUser:
     ```python
     >>> user = ZimbraUser("https://myzimbra.server")
     >>> user.login("s000000", "hunter2")
-    >>> user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
+    >>> user.send_mail(to="receiver@example.com", subject="subject", body="body")
     ```
 
     methods:
@@ -53,16 +54,13 @@ class ZimbraUser:
     user.login(username: str, password: str) -> bool
 
     # Gets a new JSESSIONID Cookie for the current user:
-    user.refresh_session_id() -> None
+    user.get_session_id() -> Optional[str]
 
-    # Try to get a crumb for the current user:
-    user.get_crumb() -> Optional[str]
-
-    # Checks if the current user is allowed to send as `from_header`:
-    user.allowed_from_header(from_header: str) -> bool
+    # Try to get a crumb and the from address for the current user:
+    user.get_mail_info() -> Optional[Dict[str, str]]
 
     # Send an email from the current user account:
-    send_mail(from_header: str, to: str, subject: str, body: str,
+    send_mail(to: str, subject: str, body: str,
               cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "",
               inreplyto: Optional[str] = "", messageid: Optional[str] = "")
               -> Optional[requests.Response]
@@ -116,8 +114,13 @@ class ZimbraUser:
             f'{self.url}/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
-            self.refresh_session_id()
-            return True
+            self.session_data.jsessionid = self.get_session_id()
+            mail_info = self.get_mail_info()
+            if mail_info is None:
+                return False
+            self.session_data.crumb = mail_info["crumb"]
+            self.session_data.from_address = mail_info["from_address"]
+            return self.authenticated
         else:
             if "The username or password is incorrect" in response.text:
                 logging.error(
@@ -126,15 +129,15 @@ class ZimbraUser:
             logging.error(f"Failed login attempt for user {username}")
             return False
 
-    def get_crumb(self) -> Optional[str]:
+    def get_mail_info(self) -> Optional[Dict[str, str]]:
         """
-        Gets a valid crumb to send an email
+        Gets a valid crumb and from header to send an email
 
             Returns:
-                Optional[str]: A crumb if authenticated, None otherwise
+                Optional[Dict[str, str]]: {'crumb': 'xxx', 'from_header': 's00000@domain.com'} or None
         """
 
-        if not self.authenticated:
+        if not self.session_data.token or not self.session_data.jsessionid:
             return None
 
         cookies = {
@@ -153,15 +156,19 @@ class ZimbraUser:
 
         response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
 
-        crumb = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
-        if len(crumb) == 0:
+        crumb_matches = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
+        if len(crumb_matches) == 0:
             return None
-        else:
-            return str(crumb[0])
+        crumb = str(crumb_matches[0])
+        from_address_matches = re.findall('<input type="hidden" name="from" value="(.*?)"/>', response.text)
+        if len(from_address_matches) == 0:
+            return None
+        from_header = str(from_address_matches[0].replace("&#034;", "\"").replace("&lt;", "<").replace("&gt;", ">"))
+        return {"crumb": crumb, "from_address": from_header}
 
-    def refresh_session_id(self):
+    def get_session_id(self) -> Optional[str]:
         """
-        Sets a new session id for the current session.
+        Gets a new session id for the current user.
         """
 
         cookies = {
@@ -178,36 +185,18 @@ class ZimbraUser:
         )
 
         response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
-        self.session_data.jsessionid = response.cookies["JSESSIONID"]
+        if "JSESSIONID" in response.cookies:
+            return str(response.cookies["JSESSIONID"])
+        else:
+            return None
 
-    def allowed_from_header(self, from_header: str) -> bool:
-        """
-        Checks if the current logged-in user is allowed to send as from_header
-            Parameters:
-                from_header (str): A RFC-822 compliant email from: header
-
-            Returns:
-                bool: True if the user is allowed to send from this header
-        """
-        if self.session_data.username is None:
-            # if we don't have a user, don't send as anyone
-            return False
-        parsed_from_header = email.utils.parseaddr(from_header)
-        if not from_header.count("<") == 1 and from_header.count(">") == 1:
-            # there might be multiple emails in this header: "Name <email1@email1.com> <email2@email2.com>" -> disallow
-            return False
-        # we're only allowed to send from: "<{username}@...>", with any name "Any Name <...>"
-        # FIXME: currently allows sending from ANY email domain
-        return self.session_data.username + "@" in parsed_from_header[1]
-
-    def send_mail(self, from_header: str, to: str, subject: str, body: str,
+    def send_mail(self, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
                   messageid: Optional[str] = "") -> Optional[requests.Response]:
         """
         Sends an email as the current user.
 
             Parameters:
-                from_header (str): Apparent sender
                 to (str): Recipient
                 subject (str): Email Subject Header
                 body (str): plain/text email body
@@ -223,20 +212,11 @@ class ZimbraUser:
             Returns:
                 Optional[Response]: The response from the web interface, None on failure
         """
-        if not self.session_data.is_valid():
-            return None
-
-        # make sure the from header looks valid and is owned by the sender to prevent spoofing
-        if not self.allowed_from_header(from_header):
-            logging.warn(f"User {self.session_data.username} tried to send as {from_header} but was not allowed.")
+        if not self.authenticated:
             return None
 
         # generating uique senduid for every email.
         senduid = uuid.uuid4()
-        crumb = self.get_crumb()
-
-        if crumb is None:
-            return None
 
         boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
 
@@ -250,14 +230,13 @@ class ZimbraUser:
             if "\r\n" not in raw:
                 raw = raw.replace("\n", "\r\n")
 
-        payload = raw.format(boundary=boundary, from_header=from_header, to=to, subject=subject, body=body, senduid=senduid,
-                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=crumb)
+        payload = raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
+                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb)
 
         url = f"{self.url}/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)
 
         return response
-
     @property
     def authenticated(self) -> bool:
         return self.session_data.is_valid()
