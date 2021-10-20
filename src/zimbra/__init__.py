@@ -25,6 +25,12 @@ __version__ = '1.0.1'
 
 
 @dataclass
+class Response:
+    success: bool = False
+    message: str = ""
+
+
+@dataclass
 class SessionData:
     token: Optional[str] = None
     jsessionid: Optional[str] = None
@@ -123,8 +129,7 @@ class ZimbraUser:
             return self.authenticated
         else:
             if "The username or password is incorrect" in response.text:
-                logging.error(
-                    f"Failed login attempt for user {username}: Wrong credentials")
+                logging.error(f"Failed login attempt for user {username}: Wrong credentials")
                 return False
             logging.error(f"Failed login attempt for user {username}")
             return False
@@ -192,7 +197,7 @@ class ZimbraUser:
 
     def send_mail(self, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
-                  messageid: Optional[str] = "") -> Optional[requests.Response]:
+                  messageid: Optional[str] = "") -> Response:
         """
         Sends an email as the current user.
 
@@ -210,10 +215,10 @@ class ZimbraUser:
 
 
             Returns:
-                Optional[Response]: The response from the web interface, None on failure
+                Response: A zimbra.Response object
         """
         if not self.authenticated:
-            return None
+            return Response(False, "Not Authenticated")
 
         # generating uique senduid for every email.
         senduid = uuid.uuid4()
@@ -236,7 +241,15 @@ class ZimbraUser:
         url = f"{self.url}/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload.encode("utf8"))
 
-        return response
+        # finding the status in the response
+        zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)
+        if len(zresponsestatus) == 0:
+            logging.error("Website content returned no status.\n{response}")
+            return Response(False, "Unknown Error")
+        else:
+            logging.info(zresponsestatus[0])
+            success = (str(zresponsestatus[0])) == "Ihre Mail wurde gesendet."
+            return Response(success, (str(zresponsestatus[0])))
 
     @property
     def authenticated(self) -> bool:

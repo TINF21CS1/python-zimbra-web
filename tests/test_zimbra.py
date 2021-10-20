@@ -14,11 +14,10 @@ def test_failing_authentication():
 
 def test_send_email(zimbra_user: ZimbraUser):
     identifier = uuid.uuid4()
-    response = zimbra_user.send_mail(to=f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
-                                     subject=f"Test Mail {identifier}", body=f"This is a test mail with the identifier {identifier}")
-    assert response is not None
-    assert response.status_code == 200
-    assert "Ihre Mail wurde gesendet" in response.text
+    response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                     f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}")
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
 
 
 def test_send_utf8(zimbra_user: ZimbraUser):
@@ -26,6 +25,5 @@ def test_send_utf8(zimbra_user: ZimbraUser):
     unicodes = pkg_resources.resource_stream(__name__, "templates/unicode.txt").read().decode("utf8")
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
                                      f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}. Unicodes: {unicodes}")
-    assert response is not None
-    assert response.status_code == 200
-    assert "Ihre Mail wurde gesendet" in response.text
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
