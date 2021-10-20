@@ -1,3 +1,15 @@
+"""# Zimbra
+
+Only 1 class: `ZimbraUser`
+
+Usage example:
+```python
+>>> from zimbra import ZimbraUser
+>>> user = ZimbraUser("https://myzimbra.server")
+>>> user.login("s000000", "hunter2")
+>>> user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
+```
+"""
 import logging
 from typing import Optional, Dict
 from dataclasses import dataclass, astuple
@@ -27,6 +39,38 @@ class SessionData:
 class ZimbraUser:
     """
     This class represent a single user instance on the Zimbra Web Interface.
+
+    usage example:
+    ```python
+    >>> user = ZimbraUser("https://myzimbra.server")
+    >>> user.login("s000000", "hunter2")
+    >>> user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
+    ```
+
+    methods:
+    ```python
+    # Login as a user. Returns True on success: 
+    user.login(username: str, password: str) -> bool
+    
+    # Gets a new JSESSIONID Cookie for the current user:
+    user.refresh_session_id() -> None
+
+    # Try to get a crumb for the current user:
+    user.get_crumb() -> Optional[str]
+
+    # Checks if the current user is allowed to send as `from_header`:
+    user.allowed_from_header(from_header: str) -> bool
+
+    # Send an email from the current user account:
+    send_mail(from_header: str, to: str, subject: str, body: str,
+              cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", 
+              inreplyto: Optional[str] = "", messageid: Optional[str] = "") 
+              -> Optional[requests.Response]
+    ```
+
+    properties:
+
+    `authenticated (bool)`: True if this instance is authenticated with the Zimbra Web Interface
     """
     _headers: Dict[str, str] = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
