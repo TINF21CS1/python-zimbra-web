@@ -237,6 +237,7 @@ class ZimbraUser:
         response = requests.post(url, headers=headers, data=payload)
 
         return response
+
     @property
     def authenticated(self) -> bool:
         return self.session_data.is_valid()
