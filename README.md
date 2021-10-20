@@ -9,9 +9,9 @@
 ```python
 from zimbra import ZimbraUser
 
-user = ZimbraUser()
+user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
-user.send_mail("receiver@example.com", "subject", "body")
+user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
 ```
 
 ## Contributing
@@ -23,6 +23,13 @@ user.send_mail("receiver@example.com", "subject", "body")
    1. `mypy src` returns no failures.
    2. `flake8 src tests` returns no problems.
    3. `pytest` has no unexpected failed tests.
-   4. Optionoally, test with `tox`. Might take a few minutes so maybe only run before push. 
+   4. Optionoally, test with `tox`. Might take a few minutes so maybe only run before push.
 
+### Install
 
+```python
+pip install -e .
+```
+
+This installs the package with symlink, so the package is automatically updated, when files are changed.
+It can then be called in a python console.
