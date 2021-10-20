@@ -23,6 +23,13 @@ user.send_mail("receiver@example.com", "subject", "body")
    1. `mypy src` returns no failures.
    2. `flake8 src tests` returns no problems.
    3. `pytest` has no unexpected failed tests.
-   4. Optionoally, test with `tox`. Might take a few minutes so maybe only run before push. 
+   4. Optionoally, test with `tox`. Might take a few minutes so maybe only run before push.
 
+### Install
 
+```python
+pip install -e .
+```
+
+This installs the package with symlink, so the package is automatically updated, when files are changed.
+It can then be called in a python console.
