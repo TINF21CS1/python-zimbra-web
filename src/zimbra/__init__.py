@@ -4,7 +4,8 @@ from dataclasses import dataclass, astuple
 import uuid
 import pkg_resources
 import re
-import random,string
+import random
+import string
 
 import requests
 
