@@ -15,4 +15,5 @@ def test_send_email(zimbra_user: ZimbraUser):
     identifier = uuid.uuid4()
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
                                      f"Test Mail {identifier}", f"This is a test mail with the identifier {identifier}")
-    assert response == "Ihre Mail wurde gesendet."
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
