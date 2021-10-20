@@ -72,8 +72,7 @@ class ZimbraUser:
             return True
         else:
             if "The username or password is incorrect" in response.text:
-                logging.error(
-                    f"Failed login attempt for user {username}: Wrong credentials")
+                logging.error(f"Failed login attempt for user {username}: Wrong credentials")
                 return False
             logging.error(f"Failed login attempt for user {username}")
             return False
@@ -182,7 +181,9 @@ class ZimbraUser:
         url = f"https://studgate.dhbw-mannheim.de/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)
 
-        return response
+        zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)[0]
+
+        return zresponsestatus
 
     @property
     def authenticated(self) -> bool:
