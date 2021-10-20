@@ -134,7 +134,7 @@ class ZimbraUser:
 
     def send_mail(self, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
-                  messageid: Optional[str] = "") -> Optional[requests.Response]:
+                  messageid: Optional[str] = "") -> Optional[str]:
         """
         Sends an email as the current user.
 
@@ -152,7 +152,7 @@ class ZimbraUser:
 
 
             Returns:
-                Optional[Response]: The response from the web interface, None on failure
+                Optional[str]: The response status from the web interface, "Unknown Error" when no status is parsed
         """
         if not self.session_data.is_valid():
             return None
@@ -183,10 +183,14 @@ class ZimbraUser:
         response = requests.post(url, headers=headers, data=payload)
 
         #finding the status in the response
-        zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)[0]
-        logging.info(zresponsestatus)
-
-        return zresponsestatus
+        zresponsestatus = re.findall('<td class="Status" nowrap="nowrap">\n            &nbsp;(.*?)\n        </td>', response.text)
+        if len(zresponsestatus) == 0:
+            logging.error("Website content returned no status.\n{response}")
+            return "Unknown Error"
+        else:
+            logging.info(zresponsestatus[0])
+            return(zresponsestatus[0])
+        
 
     @property
     def authenticated(self) -> bool:
