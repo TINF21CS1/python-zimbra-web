@@ -9,7 +9,7 @@ import string
 
 import requests
 
-__version__ = '1.0'
+__version__ = '1.0.1'
 
 
 @dataclass
@@ -68,6 +68,7 @@ class ZimbraUser:
             'https://studgate.dhbw-mannheim.de/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
+            self.refresh_session_id()
             return True
         else:
             if "The username or password is incorrect" in response.text:
