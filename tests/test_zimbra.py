@@ -19,6 +19,7 @@ def test_send_email(zimbra_user: ZimbraUser):
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
 
+
 def test_send_utf8(zimbra_user: ZimbraUser):
     identifier = uuid.uuid4()
     unicodes = pkg_resources.resource_stream(__name__, "templates/unicode.txt").read().decode("utf8")
