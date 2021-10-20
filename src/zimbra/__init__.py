@@ -6,6 +6,7 @@ import pkg_resources
 import re
 import random
 import string
+import email.utils
 
 import requests
 
@@ -135,6 +136,26 @@ class ZimbraUser:
         response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
         self.session_data.jsessionid = response.cookies["JSESSIONID"]
 
+    def allowed_from_header(self, from_header: str) -> bool:
+        """
+        Checks if the current logged-in user is allowed to send as from_header
+            Parameters:
+                from_header (str): A RFC-822 compliant email from: header
+
+            Returns:
+                bool: True if the user is allowed to send from this header
+        """
+        if self.session_data.username is None:
+            # if we don't have a user, don't send as anyone
+            return False
+        parsed_from_header = email.utils.parseaddr(from_header)
+        if not from_header.count("<") == 1 and from_header.count(">") == 1:
+            # there might be multiple emails in this header: "Name <email1@email1.com> <email2@email2.com>" -> disallow
+            return False
+        # we're only allowed to send from: "<{username}@...>", with any name "Any Name <...>"
+        # FIXME: currently allows sending from ANY email domain
+        return self.session_data.username + "@" in parsed_from_header[1]
+
     def send_mail(self, from_header: str, to: str, subject: str, body: str,
                   cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "", inreplyto: Optional[str] = "",
                   messageid: Optional[str] = "") -> Optional[requests.Response]:
@@ -159,6 +180,11 @@ class ZimbraUser:
                 Optional[Response]: The response from the web interface, None on failure
         """
         if not self.session_data.is_valid():
+            return None
+
+        # make sure the from header looks valid and is owned by the sender to prevent spoofing
+        if not self.allowed_from_header(from_header):
+            logging.warn(f"User {self.session_data.username} tried to send as {from_header} but was not allowed.")
             return None
 
         # generating uique senduid for every email.
