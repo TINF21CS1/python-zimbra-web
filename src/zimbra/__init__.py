@@ -235,8 +235,21 @@ class ZimbraUser:
             if "\r\n" not in raw:
                 raw = raw.replace("\n", "\r\n")
 
+        # Variablen für Attachments sind: filecontent, filename, mimetype
+
+        #reading binary attachment form file
+        #with open(pkg_resources.resource_filename(__name__, "templates/Testbild.jpg"), "rb") as f:
+        #    filecontent = f.read() # reads raw
+        #the attachment variables are hardcoded for testing right now
+        filename="Testanhang.txt"
+        mimetype="text/plain"
+        filecontent="Testinhalt"
+
         payload = raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
-                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb)
+                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb,
+                             filename=filename, filecontent=filecontent, mimetype=mimetype)
+
+        logging.debug(payload)
 
         url = f"{self.url}/zimbra/h/search;jsessionid={self.session_data.jsessionid}?si=0&so=0&sc=612&st=message&action=compose"
         response = requests.post(url, headers=headers, data=payload)

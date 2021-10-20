@@ -3,6 +3,12 @@ Content-Disposition: form-data; name="actionSend"
 
 Senden
 --{boundary}
+Content-Disposition: form-data; name="fileUpload"; filename="{filename}"
+Content-Transfer-Encoding: base64
+Content-Type: {mimetype}
+
+{filecontent}
+--{boundary}
 Content-Disposition: form-data; name="to"
 
 {to}
