@@ -231,6 +231,16 @@ class ZimbraUser:
         return payload.encode("utf8"), boundary
 
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
+        """
+        Sends a raw payload to the Web interface.
+
+            Parameters:
+                payload (bytes): The payload to send in the body of the request
+                boundary (str): The boundary that is used in the WebkitFormBoundary payload
+
+            Returns:
+                Response: A zimbra.Response object with response.True if payload was sent successfully
+        """
         if not self.authenticated:
             return Response(False, "Not Authenticated")
 
