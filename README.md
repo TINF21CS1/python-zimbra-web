@@ -11,8 +11,12 @@ from zimbra import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
-user.send_mail(from_header="Me <me@myzimbra.server>", to="receiver@example.com", subject="subject", body="body")
+user.send_mail(to="receiver@example.com", subject="subject", body="body")
 ```
+
+## Known Limitations
+
+* Emoji is not supported, even though other UTF-8 characters are. See Issue #3
 
 ## Contributing
 
