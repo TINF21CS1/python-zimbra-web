@@ -211,7 +211,7 @@ class ZimbraUser:
                 to (str): Recipient
                 subject (str): Email Subject Header
                 body (str): plain/text email body
-                attachments (list[WebkitAttachment]): List of attachments
+                attachments (List[WebkitAttachment]): List of attachments
 
             Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
@@ -273,7 +273,7 @@ class ZimbraUser:
             success = status_msg == "Ihre Mail wurde gesendet."
             return Response(success, status_msg)
 
-    def send_mail(self, to: str, subject: str, body: str, attachments: list[WebkitAttachment] = [], **kwargs) -> Response:
+    def send_mail(self, to: str, subject: str, body: str, attachments: List[WebkitAttachment] = [], **kwargs) -> Response:
         """
         Sends an email as the current user.
 
@@ -281,7 +281,7 @@ class ZimbraUser:
                 to (str): Recipient
                 subject (str): Email Subject Header
                 body (str): plain/text email body
-                attachments (list[WebkitAttachment]): List of attachments
+                attachments (List[WebkitAttachment]): List of attachments
 
             Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
