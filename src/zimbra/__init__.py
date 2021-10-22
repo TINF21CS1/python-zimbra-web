@@ -235,19 +235,9 @@ class ZimbraUser:
         filename="Testanhang.txt"
         mimetype="text/plain"
 
-        # the b' is already in the raw at this point, so i dont think its a payload encoding error
-        with open("filecontentraw.log", "a") as f:
-            f.write(str(filecontent))
-            f.close()
-
         payload = raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
                              cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb,
                              filename=filename, filecontent=filecontent, mimetype=mimetype)
-
-        # the b' is already in the payload at this point, so i dont think its a utf8 encoding error
-        with open("payload.log", "a") as f:
-            f.write(payload)
-            f.close()
 
         return payload.encode("utf8"), boundary
 
