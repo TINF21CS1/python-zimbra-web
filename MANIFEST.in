@@ -1,4 +1,4 @@
 include tox.ini
-recursive-include src *.txt
 recursive-include tests *.txt
+recursive-include tests *.jpg
 recursive-include tests *.py

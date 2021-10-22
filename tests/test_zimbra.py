@@ -1,4 +1,4 @@
-from zimbra import ZimbraUser
+from zimbra import ZimbraUser, WebkitAttachment
 import os
 import pkg_resources
 
@@ -22,5 +22,14 @@ def test_send_utf8(zimbra_user: ZimbraUser, identifier: str):
     unicodes = pkg_resources.resource_stream(__name__, "templates/unicode.txt").read().decode("utf8")
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
                                      "[PYTEST] Unicode Test", f"{identifier}Unicodes: {unicodes}")
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
+
+
+def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
+    attachment_raw = pkg_resources.resource_stream(__name__, "templates/Testbild.jpg").read()
+    attachments = [WebkitAttachment(filename="Testbild.jpg", mimetype="image/jpeg", content=attachment_raw)]
+    response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                     "[PYTEST] Attachment Test", f"{identifier} Hello with attachments!", attachments=attachments)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
