@@ -1,13 +1,13 @@
-# Python Zimbra
+# Python Zimbra Web
 | branch    | status           |
 |-----------|------------------|
-| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) | 
-| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) |
+| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) | 
+| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) |
 
 ## Usage
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")

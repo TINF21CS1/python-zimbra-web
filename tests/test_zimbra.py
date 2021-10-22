@@ -1,4 +1,4 @@
-from zimbra import ZimbraUser, WebkitAttachment
+from zimbraweb import ZimbraUser, WebkitAttachment
 import os
 import pkg_resources
 
