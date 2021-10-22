@@ -24,3 +24,9 @@ def test_send_utf8(zimbra_user: ZimbraUser, identifier: str):
                                      "[PYTEST] Unicode Test", f"{identifier}Unicodes: {unicodes}")
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
+
+def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
+    response = zimbra_user.send_attachment_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                                        "[PYTEST] Attachment Test", f"{identifier} Hello with attachments!")
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."

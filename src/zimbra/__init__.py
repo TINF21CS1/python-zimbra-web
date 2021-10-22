@@ -226,6 +226,17 @@ class ZimbraUser:
         if "\r\n" not in raw:
             raw = raw.replace("\n", "\r\n")
 
+        payload = raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
+                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb)
+
+        return payload.encode("utf8"), boundary
+
+    def send_attachment_mail(self, to, subject, body, **kwargs):
+
+        # generating uique senduid and boundary for every email.
+        senduid = uuid.uuid4()
+        boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
+
         # Variablen für Attachments sind: filecontent, filename, mimetype
 
         #reading binary attachment form file
@@ -235,11 +246,26 @@ class ZimbraUser:
         filename="Testanhang.txt"
         mimetype="text/plain"
 
-        payload = raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
-                             cc=cc, bcc=bcc, replyto=replyto, inreplyto=inreplyto, messageid=messageid, crumb=self.session_data.crumb,
-                             filename=filename, filecontent=filecontent, mimetype=mimetype)
+        #data = {"to": to, "subject": subject, "body": body, **kwargs, "crumb": self.session_data.crumb}
+        payload = f'--{boundary}\r\nContent-Disposition: form-data; name="actionSend";\r\nSenden\r\n'.encode("utf8")
+        payload = f'--{boundary}\r\nContent-Disposition: form-data; name="fileUpload"; filename="{filename}"\r\nContent-Type: {mimetype}\r\n\r\n'.encode("utf8")
 
-        return payload.encode("utf8"), boundary
+        payload += filecontent
+
+        #aktuell noch statisch aus message.txt, but maybe generate dynamically
+        with open(pkg_resources.resource_filename(__name__, "templates/message_backpart.txt")) as f:
+            raw = f.read()
+        if "\r\n" not in raw:
+            raw = raw.replace("\n", "\r\n")
+        payload += raw.format(boundary=boundary, from_header=self.session_data.from_address, to=to, subject=subject, body=body, senduid=senduid,
+                              cc="", bcc="", replyto="", inreplyto="", messageid="", crumb=self.session_data.crumb).encode("utf8")
+        #dynamisches zusammenstellen der payload
+        #for item in data.items():
+        #    payload += f'--{boundary}\r\nContent-Disposition: form-data; name="{item[0]}"\r\n\r\n{items[1]}\r\n".encode("utf8")
+        #payload += f"--{boundary}--\r\n"
+
+        response = self.send_raw_payload(payload, boundary)
+        return response
 
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
         """

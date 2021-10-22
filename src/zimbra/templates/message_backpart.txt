@@ -1,13 +1,4 @@
 --{boundary}
-Content-Disposition: form-data; name="actionSend"
-
-Senden
---{boundary}
-Content-Disposition: form-data; name="fileUpload"; filename="{filename}"
-Content-Type: {mimetype}
-
-{filecontent}
---{boundary}
 Content-Disposition: form-data; name="to"
 
 {to}
