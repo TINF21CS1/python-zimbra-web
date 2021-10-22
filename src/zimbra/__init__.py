@@ -9,7 +9,7 @@ Usage example:
 ```
 """
 import logging
-from typing import Optional, Dict, Tuple
+from typing import Optional, Dict, Tuple, List
 from dataclasses import dataclass, astuple
 import uuid
 import re
@@ -204,7 +204,7 @@ class ZimbraUser:
         else:
             return None
 
-    def generate_webkit_payload(self, to: str, subject: str, body: str, attachments: list[WebkitAttachment] = [], **kwargs) -> Tuple[bytes, str]:
+    def generate_webkit_payload(self, to: str, subject: str, body: str, attachments: List[WebkitAttachment] = [], **kwargs) -> Tuple[bytes, str]:
         """Generate a WebkitFormBoundary payload
 
             Parameters:
