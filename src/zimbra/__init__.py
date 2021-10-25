@@ -103,7 +103,7 @@ class ZimbraUser:
     def logout(self) -> bool:
         """
         Return:
-            false - 
+            false -
         """
         cookies = {  # possible code reuse -> waiting for crafter...
             'ZM_TEST': 'true',
@@ -115,10 +115,9 @@ class ZimbraUser:
             ('loginOp', 'logout'),
         )
 
-        response = requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=cookies)
+        requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=cookies)
         self.session_data = SessionData()
         return True  # self.dataobj add logout: bool?
-        
 
     def login(self, username: str, password: str) -> bool:
         """
