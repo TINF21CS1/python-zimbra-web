@@ -117,7 +117,7 @@ class ZimbraUser:
 
         response = requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=cookies)
         self.session_data = SessionData()
-        return 1 # self.dataobj add logout: bool?
+        return True # self.dataobj add logout: bool?
         
 
     def login(self, username: str, password: str) -> bool:
