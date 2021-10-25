@@ -105,7 +105,7 @@ class ZimbraUser:
         Return:
             false - 
         """
-        cookies = { # possible code reuse -> waiting for crafter...
+        cookies = {  # possible code reuse -> waiting for crafter...
             'ZM_TEST': 'true',
             'ZM_AUTH_TOKEN': self.session_data.token,
             'JSESSIONID': self.session_data.jsessionid
@@ -117,7 +117,7 @@ class ZimbraUser:
 
         response = requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=cookies)
         self.session_data = SessionData()
-        return True # self.dataobj add logout: bool?
+        return True  # self.dataobj add logout: bool?
         
 
     def login(self, username: str, password: str) -> bool:
