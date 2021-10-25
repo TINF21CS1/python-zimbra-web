@@ -100,6 +100,26 @@ class ZimbraUser:
         self.session_data = SessionData()
         self.url = url
 
+    def logout(self) -> bool:
+        """
+        Return:
+            false - 
+        """
+        cookies = { # possible code reuse -> waiting for crafter...
+            'ZM_TEST': 'true',
+            'ZM_AUTH_TOKEN': self.session_data.token,
+            'JSESSIONID': self.session_data.jsessionid
+        }
+
+        params = (
+            ('loginOp', 'logout'),
+        )
+
+        response = requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=cookies)
+        self.session_data = SessionData()
+        return 1; # self.dataobj add logout: bool?
+        
+
     def login(self, username: str, password: str) -> bool:
         """
         Gets an authentication token from the Zimbra Web Client using username and password as authentication.
