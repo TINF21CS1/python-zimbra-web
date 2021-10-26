@@ -51,6 +51,15 @@ class SessionData:
         """Returns True if no attributes are None"""
         return all(astuple(self))
 
+    def as_cookies(self) -> Dict[str, str]:
+        """Returns a dictionary containting ZM_TEST, ZM_AUTH_TOKEN, JSESSIONID"""
+        cookies = {"ZM_TEST": 'true'}
+        if self.token is not None:
+            cookies["ZM_AUTH_TOKEN"] = self.token
+        if self.jsessionid is not None:
+            cookies["JSESSIONID"] = self.jsessionid
+        return cookies
+
 
 class ZimbraUser:
     """
@@ -113,10 +122,6 @@ class ZimbraUser:
         """
         self.session_data.username = username
 
-        cookies = {
-            'ZM_TEST': 'true',  # determine if cookies are enabled
-        }
-
         data = {
             'loginOp': 'login',
             'username': username,
@@ -126,7 +131,7 @@ class ZimbraUser:
         }
 
         response = requests.post(
-            f'{self.url}/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
+            f'{self.url}/zimbra/', cookies=self.session_data.as_cookies(), headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
             self.session_data.jsessionid = self.get_session_id()
@@ -154,12 +159,6 @@ class ZimbraUser:
         if not self.session_data.token or not self.session_data.jsessionid:
             return None
 
-        cookies = {
-            'ZM_TEST': 'true',
-            'ZM_AUTH_TOKEN': self.session_data.token,
-            'JSESSIONID': self.session_data.jsessionid
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -168,7 +167,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
 
         crumb_matches = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
         if len(crumb_matches) == 0:
@@ -185,11 +184,6 @@ class ZimbraUser:
         Gets a new session id for the current user.
         """
 
-        cookies = {
-            'ZM_TEST': 'true',
-            'ZM_AUTH_TOKEN': self.session_data.token,
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -198,7 +192,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
         if "JSESSIONID" in response.cookies:
             return str(response.cookies["JSESSIONID"])
         else:
