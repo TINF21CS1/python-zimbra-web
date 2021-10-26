@@ -118,7 +118,7 @@ class ZimbraUser:
 
     def logout(self) -> bool:
         """
-            Logout-Action is only performed if Session-Date is Valid! 
+            Logout-Action is only performed if Session-Date is Valid!
             Return Value = Lougout-Action performed?
         """
         if not self.session_data.is_valid():
@@ -128,8 +128,9 @@ class ZimbraUser:
                 ('loginOp', 'logout'),
             )
 
-            requests.get(f'{self.url}/zimbra', headers=self._headers, params=params, cookies=self.session_data.as_cookies())  # maybe search response if auth-token expired/not valid??
-            self.session_data = SessionData()
+            requests.get(
+                f'{self.url}/zimbra', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
+            self.session_data = SessionData()   # maybe search response if auth-token expired/not valid??
             return True
 
     def login(self, username: str, password: str) -> bool:
