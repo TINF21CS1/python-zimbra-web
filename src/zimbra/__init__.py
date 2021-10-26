@@ -15,6 +15,7 @@ import uuid
 import re
 import random
 import string
+import time
 
 import requests
 
@@ -42,14 +43,29 @@ class Response:
 @dataclass
 class SessionData:
     token: Optional[str] = None
+    expires: Optional[int] = None
     jsessionid: Optional[str] = None
     username: Optional[str] = None
     from_address: Optional[str] = None
     crumb: Optional[str] = None
 
     def is_valid(self) -> bool:
-        """Returns True if no attributes are None"""
-        return all(astuple(self))
+        """Returns True if no attributes are None and auth token is still valid"""
+        if all(astuple(self)):
+            # coverd by all(...) but mypy doesn't understand: https://github.com/python/mypy/issues/11339#issuecomment-943970226
+            assert self.expires is not None
+
+            return self.expires > int(time.time())
+        return False
+
+    def as_cookies(self) -> Dict[str, str]:
+        """Returns a dictionary containting ZM_TEST, ZM_AUTH_TOKEN, JSESSIONID"""
+        cookies = {"ZM_TEST": 'true'}
+        if self.token is not None:
+            cookies["ZM_AUTH_TOKEN"] = self.token
+        if self.jsessionid is not None:
+            cookies["JSESSIONID"] = self.jsessionid
+        return cookies
 
 
 class ZimbraUser:
@@ -132,10 +148,6 @@ class ZimbraUser:
         """
         self.session_data.username = username
 
-        cookies = {
-            'ZM_TEST': 'true',  # determine if cookies are enabled
-        }
-
         data = {
             'loginOp': 'login',
             'username': username,
@@ -145,9 +157,12 @@ class ZimbraUser:
         }
 
         response = requests.post(
-            f'{self.url}/zimbra/', cookies=cookies, headers=self._headers, data=data, allow_redirects=False)
+            f'{self.url}/zimbra/', cookies=self.session_data.as_cookies(), headers=self._headers, data=data, allow_redirects=False)
         if "ZM_AUTH_TOKEN" in response.cookies:
             self.session_data.token = response.cookies["ZM_AUTH_TOKEN"]
+            for cookie in response.cookies:
+                if cookie.name == "ZM_AUTH_TOKEN":
+                    self.session_data.expires = cookie.expires
             self.session_data.jsessionid = self.get_session_id()
             mail_info = self.get_mail_info()
             if mail_info is None:
@@ -173,12 +188,6 @@ class ZimbraUser:
         if not self.session_data.token or not self.session_data.jsessionid:
             return None
 
-        cookies = {
-            'ZM_TEST': 'true',
-            'ZM_AUTH_TOKEN': self.session_data.token,
-            'JSESSIONID': self.session_data.jsessionid
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -187,7 +196,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
 
         crumb_matches = re.findall('<input type="hidden" name="crumb" value="(.*?)"/>', response.text)
         if len(crumb_matches) == 0:
@@ -204,11 +213,6 @@ class ZimbraUser:
         Gets a new session id for the current user.
         """
 
-        cookies = {
-            'ZM_TEST': 'true',
-            'ZM_AUTH_TOKEN': self.session_data.token,
-        }
-
         params = (
             ('si', '0'),
             ('so', '0'),
@@ -217,7 +221,7 @@ class ZimbraUser:
             ('action', 'compose'),
         )
 
-        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=cookies)
+        response = requests.get(f'{self.url}/zimbra/h/search', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
         if "JSESSIONID" in response.cookies:
             return str(response.cookies["JSESSIONID"])
         else:
