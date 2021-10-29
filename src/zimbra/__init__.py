@@ -1,13 +1,8 @@
-"""# Zimbra
-
-Usage example:
-```python
->>> from zimbra import ZimbraUser
->>> user = ZimbraUser("https://myzimbra.server")
->>> user.login("s000000", "hunter2")
->>> user.send_mail(to="receiver@example.com", subject="subject", body="body")
-```
 """
+
+"""
+
+
 import logging
 from typing import Optional, Dict, Tuple, List
 from dataclasses import dataclass, astuple
@@ -24,6 +19,14 @@ __version__ = '1.1.0'
 
 @dataclass
 class WebkitAttachment:
+    """
+    Represents a single attachment for WebkitFormBoundary data.
+
+    Attributes:
+        filename (str): The name of the attachment
+        mimetype (str): The Mimetype, e.g. image/jpeg.
+        content (bytes): The raw bytes of the attachment.
+    """
     filename: str
     mimetype: str
     content: bytes
@@ -36,12 +39,26 @@ class WebkitAttachment:
 
 @dataclass
 class Response:
+    """
+    Helper class to return a success bool and a status message.
+    """
     success: bool = False
     message: str = ""
 
 
 @dataclass
 class SessionData:
+    """
+    Holds all authentication session data for a single Zimbra web user.
+
+    Attributes:
+        token (Optional[str]): A ZM_AUTH_TOKEN cookie, if authenticated.
+        expires (Optional[int]): The unixtime expiration date of the auth token.
+        jsessionid (Optional[str]): A JSESSIONID cookie, if a session has been opened.
+        username (Optional[str]): The username of the authenticated user, if authenticated.
+        from_address (Optional[str]): The default sender address used by the Zimbra web interface, if authenticated.
+        crumb (Optional[str]): The validation crumb needed to generate payloads, if authenticated.
+    """
     token: Optional[str] = None
     expires: Optional[int] = None
     jsessionid: Optional[str] = None
@@ -50,7 +67,7 @@ class SessionData:
     crumb: Optional[str] = None
 
     def is_valid(self) -> bool:
-        """Returns True if no attributes are None and auth token is still valid"""
+        """Returns True if no attributes are None and auth token is still valid."""
         if all(astuple(self)):
             # coverd by all(...) but mypy doesn't understand: https://github.com/python/mypy/issues/11339#issuecomment-943970226
             assert self.expires is not None
@@ -59,7 +76,7 @@ class SessionData:
         return False
 
     def as_cookies(self) -> Dict[str, str]:
-        """Returns a dictionary containting ZM_TEST, ZM_AUTH_TOKEN, JSESSIONID"""
+        """Returns a dictionary containting ZM_TEST, ZM_AUTH_TOKEN, JSESSIONID."""
         cookies = {"ZM_TEST": 'true'}
         if self.token is not None:
             cookies["ZM_AUTH_TOKEN"] = self.token
@@ -69,38 +86,8 @@ class SessionData:
 
 
 class ZimbraUser:
-    """
-    This class represent a single user instance on the Zimbra Web Interface.
+    """This class represent a single user instance on the Zimbra Web Interface."""
 
-    usage example:
-    ```python
-    >>> user = ZimbraUser("https://myzimbra.server")
-    >>> user.login("s000000", "hunter2")
-    >>> user.send_mail(to="receiver@example.com", subject="subject", body="body")
-    ```
-
-    methods:
-    ```python
-    # Login as a user. Returns True on success:
-    user.login(username: str, password: str) -> bool
-
-    # Gets a new JSESSIONID Cookie for the current user:
-    user.get_session_id() -> Optional[str]
-
-    # Try to get a crumb and the from address for the current user:
-    user.get_mail_info() -> Optional[Dict[str, str]]
-
-    # Send an email from the current user account:
-    send_mail(to: str, subject: str, body: str,
-              cc: Optional[str] = "", bcc: Optional[str] = "", replyto: Optional[str] = "",
-              inreplyto: Optional[str] = "", messageid: Optional[str] = "")
-              -> Optional[requests.Response]
-    ```
-
-    properties:
-
-    `authenticated (bool)`: True if this instance is authenticated with the Zimbra Web Interface
-    """
     _headers: Dict[str, str] = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
@@ -110,16 +97,20 @@ class ZimbraUser:
 
     def __init__(self, url: str):
         """
-        Parameters:
-            url - The URL on which zimbra is hosted (i.e. where the login page is located)
+        Creates a new user instance for the Zimbra Web Client. This does not actually contact the web client yet.
+
+        Args:
+            url (str): The URL on which zimbra is hosted (i.e. where the login page is located)
         """
         self.session_data = SessionData()
         self.url = url
 
     def logout(self) -> bool:
         """
-            Logout-Action is only performed if Session-Date is Valid!
-            Return Value = Lougout-Action performed?
+        Logs the user out of the web client and invalidates any session data.
+
+        Returns:
+            True if logout was successful
         """
         if not self.session_data.is_valid():
             return False
@@ -136,12 +127,12 @@ class ZimbraUser:
         """
         Gets an authentication token from the Zimbra Web Client using username and password as authentication.
 
-            Parameters:
-                username (str): username to use for web authentication, without domain
-                password (str): password to use for web authentication
+        Args:
+            username (str): username to use for web authentication, without domain
+            password (str): password to use for web authentication
 
-            Returns:
-                bool: True if authentication was successful
+        Returns:
+            True if authentication was successful
         """
         self.session_data.username = username
 
@@ -208,6 +199,9 @@ class ZimbraUser:
     def get_session_id(self) -> Optional[str]:
         """
         Gets a new session id for the current user.
+
+        Returns:
+            A new JESSIONID or None if an error occurred.
         """
 
         params = (
@@ -227,17 +221,15 @@ class ZimbraUser:
     def generate_webkit_payload(self, to: str, subject: str, body: str, attachments: List[WebkitAttachment] = [], **kwargs) -> Tuple[bytes, str]:
         """Generate a WebkitFormBoundary payload
 
-            Parameters:
-                to (str): Recipient
-                subject (str): Email Subject Header
-                body (str): plain/text email body
-                attachments (List[WebkitAttachment]): List of attachments
+        Args:
+            to (str): Recipient.
+            subject (str): Email Subject Header.
+            body (str): plain/text email body.
+            attachments (List[zimbra.WebkitAttachment]): List of attachments to add to the payload.
+            **kwargs: Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
-            Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
-
-            Returns:
-                bytes: The WebkitFormBoundary Payload
-                str: The boundary used in the payload
+        Returns:
+            A Tuple (payload [bytes], boundary [str])
         """
 
         # generating uique senduid for every email.
@@ -263,12 +255,12 @@ class ZimbraUser:
         """
         Sends a raw payload to the Web interface.
 
-            Parameters:
-                payload (bytes): The payload to send in the body of the request
-                boundary (str): The boundary that is used in the WebkitFormBoundary payload
+        Args:
+            payload: bytes: The payload to send in the body of the request
+            boundary: str: The boundary that is used in the WebkitFormBoundary payload
 
-            Returns:
-                Response: A zimbra.Response object with response.True if payload was sent successfully
+        Returns:
+            A zimbra.Response object with response.True if payload was sent successfully and the resposne message from the web client.
         """
         if not self.authenticated:
             return Response(False, "Not Authenticated")
@@ -297,20 +289,21 @@ class ZimbraUser:
         """
         Sends an email as the current user.
 
-            Parameters:
-                to (str): Recipient
-                subject (str): Email Subject Header
-                body (str): plain/text email body
-                attachments (List[WebkitAttachment]): List of attachments
+        Args:
+            to (str): Recipient.
+            subject (str): Email Subject Header.
+            body (str): plain/text email body.
+            attachments (List[zimbra.WebkitAttachment]): List of attachments to send with the email.
+            **kwargs: Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
-            Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
-
-            Returns:
-                Response: A zimbra.Response object
+        Returns:
+            A zimbra.Response object containing the status message of the server
+            and response.success = True if the email was sent successfully.
         """
         payload, boundary = self.generate_webkit_payload(to=to, subject=subject, body=body, attachments=attachments, **kwargs)
         return self.send_raw_payload(payload, boundary)
 
     @property
     def authenticated(self) -> bool:
+        """Is the user authenticated with the web client?"""
         return self.session_data.is_valid()
