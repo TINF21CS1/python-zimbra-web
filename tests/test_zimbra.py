@@ -34,6 +34,7 @@ def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
 
+
 def test_logout(zimbra_user: ZimbraUser, identifier: str):
     if zimbra_user.logout():
         assert "Logout working fine"
