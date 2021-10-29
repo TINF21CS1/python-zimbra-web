@@ -17,6 +17,8 @@ import random
 import string
 import time
 
+from email.parser import Parser #for parsing eml
+
 import requests
 
 __version__ = '1.0.1'
@@ -229,6 +231,7 @@ class ZimbraUser:
 
         boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
 
+        #adding the send action
         payload = f'--{boundary}\r\nContent-Disposition: form-data; name="actionSend"\r\n\r\nSenden\r\n'.encode("utf8")
 
         for attachment in attachments:
@@ -240,8 +243,35 @@ class ZimbraUser:
         for prop_name, prop_value in mail_props.items():
             payload += f'--{boundary}\r\nContent-Disposition: form-data; name="{prop_name}"\r\n\r\n{prop_value}\r\n'.encode("utf8")
 
+        #adding last boundary
         payload += f'--{boundary}--\r\n'.encode("utf8")
         return payload, boundary
+
+    def generate_eml_payload(self, eml: str) -> Tuple[bytes, str]:
+        """Generate a payload from eml
+
+            Parameters:
+                eml: str
+
+            Returns:
+                bytes: The WebkitFormBoundary Payload
+                str: The boundary used in the payload
+        """
+
+        # generating uique senduid for every email.
+        senduid = uuid.uuid4()
+
+        boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
+
+        parser = Parser()
+        parsed = parser.parsestr(eml)
+
+        #this part can surely be optimized, but it works for now
+        #parsed.key() ##list of keys##; parsed.values() ##list of values##
+        parsed_dict = {parsed.keys()[i]: parsed.values()[i] for i in range(len(parsed.keys()))}
+
+        return self.generate_webkit_payload(parsed_dict['To'], parsed_dict['Subject'], parsed.get_payload())
+
 
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
         """
