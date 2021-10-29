@@ -36,14 +36,7 @@ def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
 
 
 def test_logout(zimbra_user: ZimbraUser, identifier: str):
-    if zimbra_user.logout():
-        assert "Logout working fine"
-    else:
-        assert "Session-Data not valid"
+    assert zimbra_user.logout()
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
                                      "[PYTEST-Logout] Zimbra Mail", f"{identifier}Hello, world!")
-    assert response.success
-    assert response.message == "(Logout) Ihre Mail wurde gesendet."
-    
-
-
+    assert not response.success
