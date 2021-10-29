@@ -33,3 +33,10 @@ def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
                                      "[PYTEST] Attachment Test", f"{identifier} Hello with attachments!", attachments=attachments)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
+
+def test_logout(zimbra_user: ZimbraUser, identifier: str):
+    response = zimbra_user.logout()
+    assert response.success
+    assert response.message == "Sie wurden erfolgreich Ausgeloggt!"
+
+

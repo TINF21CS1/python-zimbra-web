@@ -123,15 +123,14 @@ class ZimbraUser:
         """
         if not self.session_data.is_valid():
             return False
-        else:
-            params = (
-                ('loginOp', 'logout'),
-            )
+        params = (
+              ('loginOp', 'logout'),
+        )
 
-            requests.get(
-                f'{self.url}/zimbra', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
-            self.session_data = SessionData()   # maybe search response if auth-token expired/not valid??
-            return True
+        requests.get(
+            f'{self.url}/zimbra', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
+        self.session_data = SessionData()   # maybe search response if auth-token expired/not valid??
+        return True
 
     def login(self, username: str, password: str) -> bool:
         """
