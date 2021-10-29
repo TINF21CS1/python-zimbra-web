@@ -40,4 +40,3 @@ def test_logout(zimbra_user: ZimbraUser, identifier: str):
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
                                      "[PYTEST-Logout] Zimbra Mail", f"{identifier}Hello, world!")
     assert not response.success
-    
