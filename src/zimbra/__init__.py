@@ -128,7 +128,7 @@ class ZimbraUser:
         )
 
         requests.get(
-            f'{self.url}/zimbra', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
+            f'{self.url}/zimbra/', headers=self._headers, params=params, cookies=self.session_data.as_cookies())
         self.session_data = SessionData()   # maybe search response if auth-token expired/not valid??
         return True
 
