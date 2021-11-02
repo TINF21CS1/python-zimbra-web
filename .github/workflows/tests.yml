@@ -27,7 +27,7 @@ jobs:
         ZIMBRA_PASSWORD: ${{ secrets.ZIMBRA_PASSWORD }}
       run: tox
   deploy:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    name: Build and publish Python distribution to PyPI
     needs: test
     runs-on: ubuntu-18.04
     steps:
@@ -49,17 +49,12 @@ jobs:
         --sdist
         --wheel
         --outdir dist/
-    - name: Archive binary wheel and a source tarball
+    - name: Archive binary wheel
       uses: actions/upload-artifact@v2
       with:
         name: binary-wheel
         path: dist/*.whl
-    - name: Publish distribution 📦 to Test PyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-    - name: Publish distribution 📦 to PyPI
+    - name: Publish distribution to PyPI
       if: github.ref == 'refs/heads/main'
       uses: pypa/gh-action-pypi-publish@master
       with:
