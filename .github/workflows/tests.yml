@@ -49,9 +49,11 @@ jobs:
         --sdist
         --wheel
         --outdir dist/
+    - name: Archive binary wheel and a source tarball
+      uses: actions/upload-artifact@v2
       with:
-        name: Distribution
-        path: dist/
+        name: binary-wheel
+        path: dist
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@master
       if: github.ref == 'refs/heads/develop'
