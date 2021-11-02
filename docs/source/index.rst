@@ -25,17 +25,17 @@ Contents
 --------
 
 .. toctree::
-   zimbra
+   zimbraweb
 
 Usage
 -----
 
-You can use :meth:`zimbra.ZimbraUser` to send E-mails. You can send multiple
+You can use :meth:`zimbraweb.ZimbraUser` to send E-mails. You can send multiple
 E-mails within a single session.
 
 .. code:: python
 
-   from zimbra import ZimbraUser
+   from zimbraweb import ZimbraUser
 
    user = ZimbraUser("https://myzimbra.server")
    user.login("s000000", "hunter2")
@@ -46,11 +46,11 @@ Sending raw WebkitPayloads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you don’t want to rely on us to generate the payload, you can
-generate a payload yourself and send it using :meth:`zimbra.ZimbraUser.send_raw_payload`.
+generate a payload yourself and send it using :meth:`zimbraweb.ZimbraUser.send_raw_payload`.
 
 .. code:: python
 
-   from zimbra import ZimbraUser
+   from zimbraweb import ZimbraUser
 
    user = ZimbraUser("https://myzimbra.server")
    user.login("s000000", "hunter2")
@@ -66,11 +66,11 @@ generate a payload yourself and send it using :meth:`zimbra.ZimbraUser.send_raw_
 Attachments
 ~~~~~~~~~~~
 
-You can generate attachments using the :meth:`zimbra.WebkitAttachment` class:
+You can generate attachments using the :meth:`zimbraweb.WebkitAttachment` class:
 
 .. code:: python
 
-   from zimbra import ZimbraUser, WebkitAttachment
+   from zimbraweb import ZimbraUser, WebkitAttachment
 
    user = ZimbraUser("https://myzimbra.server")
    user.login("s000000", "hunter2")

@@ -1,9 +1,9 @@
-zimbra package
-==============
+zimbraweb package
+=================
 
 Module contents
 ---------------
 
-.. automodule:: zimbra
+.. automodule:: zimbraweb
    :members:
    :show-inheritance:

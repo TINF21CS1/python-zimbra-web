@@ -220,7 +220,7 @@ class ZimbraUser:
             to (str): Recipient.
             subject (str): Email Subject Header.
             body (str): plain/text email body.
-            attachments (List[zimbra.WebkitAttachment]): List of attachments to add to the payload.
+            attachments (List[zimbraweb.WebkitAttachment]): List of attachments to add to the payload.
             **kwargs: Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
         Returns:
@@ -251,7 +251,7 @@ class ZimbraUser:
         Sends a raw payload to the Web interface.
 
         Examples:
-            >>> from zimbra import ZimbraUser
+            >>> from zimbraweb import ZimbraUser
             >>> user = ZimbraUser("https://my-zimbra.server")
             >>> user.login("xxx", "xxx")
             >>> payload, boundary = user.generate_webkit_payload(to="hello@example.com", subject="test mail", body="hello, world!")
@@ -263,7 +263,7 @@ class ZimbraUser:
             boundary (str): The boundary that is used in the WebkitFormBoundary payload
 
         Returns:
-            A zimbra.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.
+            A zimbraweb.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.
         """
         if not self.authenticated:
             return Response(False, "Not Authenticated")
@@ -296,11 +296,11 @@ class ZimbraUser:
             to (str): Recipient.
             subject (str): Email Subject Header.
             body (str): plain/text email body.
-            attachments (List[zimbra.WebkitAttachment]): List of attachments to send with the email.
+            attachments (List[zimbraweb.WebkitAttachment]): List of attachments to send with the email.
             **kwargs: Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.
 
         Returns:
-            A zimbra.Response object containing the status message of the server
+            A zimbraweb.Response object containing the status message of the server
             and response.success = True if the email was sent successfully.
         """
         payload, boundary = self.generate_webkit_payload(to=to, subject=subject, body=body, attachments=attachments, **kwargs)
