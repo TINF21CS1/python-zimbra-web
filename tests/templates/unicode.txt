@@ -1,0 +1,88 @@
+Taken from: http://www.madore.org/~david/misc/unitest/
+
+First, some emojis: 😃📧🏴‍☠️
+
+A table of (some) accents
+
+In the following table, characters that are missing from Unicode as of version 3.0, latest draft (i.e. that cannot be represented as a single character but must use the more general form of combining diacritics) have been replaced by X, so you can tell they are not your browser's fault.
+Base	Grave	Acute	Circumflex	Tilde	Diaeresis 	Macron	Breve	Ogonek	Dot	Double acute	Caron 	Double grave	Inverted breve
+a	à	á	â	ã	ä 	ā	ă	ą	ȧ	X	ǎ 	ȁ	ȃ
+e	è	é	ê	ẽ	ë 	ē	ĕ	ę	ė	X	ě 	ȅ	ȇ
+i	ì	í	î	ĩ	ï 	ī	ĭ	į	i	X	ǐ 	ȉ	ȋ
+o	ò	ó	ô	õ	ö 	ō	ŏ	ǫ	ȯ	ő	ǒ 	ȍ	ȏ
+u	ù	ú	û	ũ	ü 	ū	ŭ	ų	X	ű	ǔ 	ȕ	ȗ
+y	ỳ	ý	ŷ	ỹ	ÿ 	ȳ	X	X	ẏ	X	X 	X	X
+
+Combining diacritics
+
+The following paragraph gives a few forms formed by using combining diacritics. The equal sign means that the combined form on the left should be identical in all respects (and in particular, represented identically) to the atomic form on the right. To emphasize even more: you should not see two signs on the left of the equal sign but one, the same as on the right.
+
+à=à; é=é; î=î (not the same as ı̂ but may be graphically identical); õ=õ; ū=ū (whereas u¯ is two different symbols); ă=ă; ė=ė (also note i̇ should be essentially i); ï=ï (whereas i̇̈ has three dots on the i); å=å (not to be confused with a° (read “a degrees”) nor a˚); ő=ő; č=č
+ç=ç; ḅ=ḅ; ḏ=ḏ (this is supposedly different from d̠ but may be graphically identical); ḙ=ḙ
+ǖ=ǖ=ǖ (not the same as ṻ which has the diaeresis on top of the macron); ǡ=ǡ=ǡ
+ǭ=ǭ=ǭ (also ǭ but the latter is not so canonical); ó̷=ǿ=ǿ (not so sure about this one)
+Various symbols
+
+Here is a table of the constellations of the Zodiac, in which the first column should contain the relevant astrological symbol:
+Sym.♈♉♊♋♌♍♎♏♐♑♒♓
+
+The following table should show a chessboard, with a pictorial representation of the pieces:
+	A	B	C	D	E	F	G	H
+8	♜	♞	♝	♛	♚	♝	♞	♜
+7	♟	♟	♟	♟	♟	♟	♟	♟
+6								
+5								
+4								
+3								
+2	♙	♙	♙	♙	♙	♙	♙	♙
+1	♖	♘	♗	♕	♔	♗	♘	♖
+
+Here is a snowflake: ❄.
+
+The following is a five-verse extract of introduction of the poem Mednyj Vsadnik; by A. S. Pushkin (in Russian):
+    По оживлённым берегам
+    Громады стройные теснятся
+    Дворцов и башен; корабли
+    Толпой со всех концов земли
+    К богатым пристаням стремятся;
+
+The following verses are lines 1182–1185 of the tragedy Oedipus Rex by Sophocles (in ancient Greek):
+    Ἰοὺ ἰού· τὰ πάντʼ ἂν ἐξήκοι σαφῆ.
+    Ὦ φῶς, τελευταῖόν σε προσϐλέψαιμι νῦν,
+    ὅστις πέφασμαι φύς τʼ ἀφʼ ὧν οὐ χρῆν, ξὺν οἷς τʼ
+    οὐ χρῆν ὁμιλῶν, οὕς τέ μʼ οὐκ ἔδει κτανών.
+
+The following is one stanza of canto Ⅵ of the Kumāra-saṃbhava (“the birth of Kumāra”) by the great Sanskrit poet Kālidāsa:
+    पशुपतिरपि तान्यहानि कृच्छ्राद्
+    अगमयदद्रिसुतासमागमोत्कः ।
+    कमपरमवशं न विप्रकुर्युर्
+    विभुमपि तं यदमी स्पृशन्ति भावाः ॥
+
+And here is the transcription of it:
+    Paśupatirapi tānyahāni kṛcchrād
+    agamayadadrisutāsamāgamotkaḥ;
+    kamaparamavaśaṃ na viprakuryur
+    vibhumapi taṃ yadamī spṛśanti bhāvāḥ?
+
+The following are the two first lines of the Analects by Confucius:
+    子曰：「學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？
+    人不知而不慍，不亦君子乎？」
+    有子曰：「其為人也孝弟，而好犯上者，鮮矣；
+    不好犯上，而好作亂者，未之有也。君子務本，本立而道生。
+    孝弟也者，其為仁之本與！」
+
+And here is the transcription of it:
+    Zǐ yuē: “Xué ér shī xí zhī, bú yì yuè hū? Yoǔ péng zì yǔan fānglái, bú yì lè hū? Rén bù zhī, ér bú yùn, bú yì jūnzǐ hū?”
+    Yóuzǐ yuē: “Qí wèi rén yě xiàodì, ér hàofànshàngzhě, xiān yǐ; bú hào fànshàng, ér hàozuòluànzhě, wèi zhī yóu yě. Jūnzǐ wù běn, běn lì ér dào shēng. Xiàodì yé zhě, qí wèi rén zhī bén yǔ!”
+
+The following is the original (Tamil) name of a famous mathematician:
+    ஸ்றீனிவாஸ ராமானுஜன் ஐயங்கார்
+
+The following lines are the first chapter of the Qur'an
+    بِسْمِ ٱللّٰهِ ٱلرَّحْمـَبنِ ٱلرَّحِيمِ
+    ٱلْحَمْدُ لِلّٰهِ رَبِّ ٱلْعَالَمِينَ
+    ٱلرَّحْمـَبنِ ٱلرَّحِيمِ
+    مَـالِكِ يَوْمِ ٱلدِّينِ
+    إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ
+    ٱهْدِنَــــا ٱلصِّرَاطَ ٱلمُسْتَقِيمَ
+    صِرَاطَ ٱلَّذِينَ أَنعَمْتَ عَلَيهِمْ غَيرِ ٱلمَغضُوبِ عَلَيهِمْ وَلاَ ٱلضَّالِّينَ
