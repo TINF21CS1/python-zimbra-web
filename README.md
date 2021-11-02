@@ -9,7 +9,7 @@
 You can use `ZimbraUser` to send E-mails. You can send multiple E-mails within a single session.
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -42,7 +42,7 @@ user.logout()
 You can generate attachments using the `WebkitAttachment` class:
 
 ```python
-from zimbra import ZimbraUser, WebkitAttachment
+from zimbraweb import ZimbraUser, WebkitAttachment
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -62,7 +62,7 @@ user.logout()
 ## Install
 
 ```
-pip install git+https://github.com/cirosec-studis/python-zimbra/
+pip install git+https://github.com/cirosec-studis/python-zimbra-web/
 ```
 
 ## Contributing
