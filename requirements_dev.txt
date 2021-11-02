@@ -5,3 +5,4 @@ pytest-cov==2.12.1
 mypy===0.910
 types-requests==2.25.11
 types-setuptools==57.4.2
+sphinx==4.2.0
