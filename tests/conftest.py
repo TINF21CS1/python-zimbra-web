@@ -1,6 +1,6 @@
 import os
 
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 import pytest
 
 

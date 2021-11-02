@@ -1,15 +1,15 @@
-# Python Zimbra
+# Python Zimbra Web
 | branch    | status           |
 |-----------|------------------|
-| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) | 
-| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) |
+| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) | 
+| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) |
 
 ## Usage
 
 You can use `ZimbraUser` to send E-mails. You can send multiple E-mails within a single session.
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -22,7 +22,7 @@ user.logout()
 If you don't want to rely on us to generate the payload, you can generate a payload yourself and send it using
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -42,7 +42,7 @@ user.logout()
 You can generate attachments using the `WebkitAttachment` class:
 
 ```python
-from zimbra import ZimbraUser, WebkitAttachment
+from zimbraweb import ZimbraUser, WebkitAttachment
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -62,7 +62,7 @@ user.logout()
 ## Install
 
 ```
-pip install git+https://github.com/cirosec-studis/python-zimbra/
+pip install git+https://github.com/cirosec-studis/python-zimbra-web/
 ```
 
 ## Contributing

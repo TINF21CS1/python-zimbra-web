@@ -1,7 +1,7 @@
-zimbra
-======
+zimbraweb
+=========
 
 .. toctree::
    :maxdepth: 4
 
-   zimbra
+   zimbraweb
