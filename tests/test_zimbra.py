@@ -41,3 +41,10 @@ def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
     response = zimbra_user.send_raw_payload(payload, boundary)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
+
+    
+def test_logout(zimbra_user: ZimbraUser, identifier: str):
+    assert zimbra_user.logout()
+    response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                     "[PYTEST-Logout] Zimbra Mail", f"{identifier}Hello, world!")
+    assert not response.success

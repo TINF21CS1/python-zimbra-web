@@ -1,10 +1,10 @@
 import os
 
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 import pytest
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def zimbra_user() -> ZimbraUser:
     username = os.environ["ZIMBRA_USERNAME"]
     password = os.environ["ZIMBRA_PASSWORD"]
