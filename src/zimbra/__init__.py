@@ -259,8 +259,8 @@ class ZimbraUser:
             Response(success=True, status="Ihre Mail wurde gesendet.")
 
         Args:
-            payload: bytes: The payload to send in the body of the request
-            boundary: str: The boundary that is used in the WebkitFormBoundary payload
+            payload (bytes): The payload to send in the body of the request
+            boundary (str): The boundary that is used in the WebkitFormBoundary payload
 
         Returns:
             A zimbra.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.
