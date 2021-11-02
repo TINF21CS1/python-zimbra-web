@@ -1,8 +1,3 @@
-"""
-
-"""
-
-
 import logging
 from typing import Optional, Dict, Tuple, List
 from dataclasses import dataclass, astuple
@@ -255,12 +250,20 @@ class ZimbraUser:
         """
         Sends a raw payload to the Web interface.
 
+        Examples:
+            >>> from zimbra import ZimbraUser
+            >>> user = ZimbraUser("https://my-zimbra.server")
+            >>> user.login("xxx", "xxx")
+            >>> payload, boundary = user.generate_webkit_payload(to="hello@example.com", subject="test mail", body="hello, world!")
+            >>> user.send_raw_payload(payload, boundary)
+            Response(success=True, status="Ihre Mail wurde gesendet.")
+
         Args:
             payload: bytes: The payload to send in the body of the request
             boundary: str: The boundary that is used in the WebkitFormBoundary payload
 
         Returns:
-            A zimbra.Response object with response.True if payload was sent successfully and the resposne message from the web client.
+            A zimbra.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.
         """
         if not self.authenticated:
             return Response(False, "Not Authenticated")
