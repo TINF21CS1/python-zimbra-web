@@ -58,6 +58,7 @@ user.logout()
 ## Known Limitations
 
 * Emoji is not supported, even though other UTF-8 characters are. See Issue #3
+* This package is made with German UIs in mind. If your UI is in a different language, feel free to fork and adjust the language-specific strings as needed. [Issue #43](https://github.com/cirosec-studis/python-zimbra-web/issues/43)
 
 ## Install
 
