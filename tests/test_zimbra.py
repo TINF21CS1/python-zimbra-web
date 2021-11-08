@@ -1,6 +1,7 @@
 import os
 import pkg_resources
 
+import pytest
 from zimbraweb import ZimbraUser, WebkitAttachment
 
 
@@ -37,6 +38,16 @@ def test_attachment_email(zimbra_user: ZimbraUser, identifier: str):
                                      "[PYTEST] Attachment Test", f"{identifier} Hello with attachments!", attachments=attachments)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
+
+
+@pytest.mark.skip(reason="Upload 15 MB -> takes a while")
+def test_attachment_too_large(zimbra_user: ZimbraUser, identifier: str):
+    attachment_raw = os.urandom(15 * 1024 * 1024)  # 15 MB
+    attachments = [WebkitAttachment(filename="Testbild.jpg", mimetype="image/jpeg", content=attachment_raw)]
+    response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
+                                     "[PYTEST] Attachment Test", f"{identifier}This email is too large!", attachments=attachments)
+    assert not response.success
+    assert response.message == "Anhang ist zu groß."
 
 
 def test_logout(zimbra_user: ZimbraUser, identifier: str):
