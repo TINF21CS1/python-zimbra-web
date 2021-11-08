@@ -30,7 +30,7 @@ jobs:
   docs:
     name: Generate Documentation
     needs: test
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -57,14 +57,14 @@ jobs:
         folder: docs/build/html
     - name: Deploy release documentation to GitHub Pages 
       uses: JamesIves/github-pages-deploy-action@4.1.5
-      if: github.ref == 'refs/heads/develop'
+      if: github.ref == 'refs/heads/main'
       with:
         branch: docs
         folder: docs/build/html
   deploy:
     name: Build and publish Python distribution to PyPI
-    needs: test
-    runs-on: ubuntu-18.04
+    needs: docs
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - name: Set up Python 3.9
