@@ -49,7 +49,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="zimbraweb.html">zimbraweb package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="zimbraweb.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zimbraweb.html#module-zimbraweb">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -57,7 +57,7 @@
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>You can use <code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.ZimbraUser()</span></code> to send E-mails. You can send multiple
+<p>You can use <a class="reference internal" href="zimbraweb.html#zimbraweb.ZimbraUser" title="zimbraweb.ZimbraUser"><code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.ZimbraUser()</span></code></a> to send E-mails. You can send multiple
 E-mails within a single session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">zimbraweb</span> <span class="kn">import</span> <span class="n">ZimbraUser</span>
 
@@ -70,7 +70,7 @@ E-mails within a single session.</p>
 <section id="sending-raw-webkitpayloads">
 <h3>Sending raw WebkitPayloads<a class="headerlink" href="#sending-raw-webkitpayloads" title="Permalink to this headline">¶</a></h3>
 <p>If you don’t want to rely on us to generate the payload, you can
-generate a payload yourself and send it using <code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.ZimbraUser.send_raw_payload()</span></code>.</p>
+generate a payload yourself and send it using <a class="reference internal" href="zimbraweb.html#zimbraweb.ZimbraUser.send_raw_payload" title="zimbraweb.ZimbraUser.send_raw_payload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.ZimbraUser.send_raw_payload()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">zimbraweb</span> <span class="kn">import</span> <span class="n">ZimbraUser</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">ZimbraUser</span><span class="p">(</span><span class="s2">&quot;https://myzimbra.server&quot;</span><span class="p">)</span>
@@ -88,7 +88,7 @@ generate a payload yourself and send it using <code class="xref py py-meth docut
 </section>
 <section id="attachments">
 <h3>Attachments<a class="headerlink" href="#attachments" title="Permalink to this headline">¶</a></h3>
-<p>You can generate attachments using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.WebkitAttachment()</span></code> class:</p>
+<p>You can generate attachments using the <a class="reference internal" href="zimbraweb.html#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">zimbraweb.WebkitAttachment()</span></code></a> class:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">zimbraweb</span> <span class="kn">import</span> <span class="n">ZimbraUser</span><span class="p">,</span> <span class="n">WebkitAttachment</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">ZimbraUser</span><span class="p">(</span><span class="s2">&quot;https://myzimbra.server&quot;</span><span class="p">)</span>
