@@ -31,7 +31,7 @@ jobs:
     name: Generate Documentation
     needs: test
     runs-on: ubuntu-18.04
-      steps:
+    steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
