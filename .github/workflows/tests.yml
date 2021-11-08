@@ -42,7 +42,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements_dev.txt
     - name: Build Sphinx HTML documentation
-      run: sphinx-build -b html docs/source docs/build/html
+      run: | 
+        sphinx-build -b html docs/source docs/build/html
+        touch docs/build/html/.nojekyll
     - name: Archive documentation
       uses: actions/upload-artifact@v2
       with:
