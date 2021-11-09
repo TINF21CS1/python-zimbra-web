@@ -50,7 +50,7 @@ def test_attachment_too_large(zimbra_user: ZimbraUser, identifier: str):
     assert not response.success
     assert response.message == "Anhang ist zu groß."
 
-    
+
 def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
     eml = pkg_resources.resource_stream(__name__, "templates/simplemail.eml").read().decode("utf8")
     payload, boundary = zimbraweb.emlparsing.plain_eml_parsing(zimbra_user, eml)

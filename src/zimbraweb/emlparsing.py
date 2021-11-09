@@ -1,14 +1,10 @@
-import logging
-from typing import Optional, Dict, Tuple, List
-import string
-import uuid
+from typing import Tuple
 import re
 import base64
-import random
 
 from email.parser import Parser
-
 from zimbraweb import ZimbraUser, WebkitAttachment  # for parsing eml
+
 
 def eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
     """Generate a payload from any eml
@@ -27,7 +23,7 @@ def eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
 
     if type(parsed.get_payload()) == str:
         return user.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
-    
+
     elif type(parsed.get_payload()) == list:
         dict_mail = {}
         dict_mail['to'] = parsed['To']
@@ -60,11 +56,10 @@ def plain_eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
         return user.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
     else:
         raise TypeError("Multipart Payload in Plain Parser. Please use multipart_eml_parsing")
-        
 
 
 def multipart_eml_parsing(user: ZimbraUser, payload: list, dict_mail: dict) -> dict:
-    #TODO correct the types, its not a list but a list of email message objects
+    # TODO correct the types, its not a list but a list of email message objects
     """Generate a dictionary of multipart-parts form a multipart email payload
 
         Parameters:

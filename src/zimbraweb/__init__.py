@@ -248,7 +248,6 @@ class ZimbraUser:
         payload += f'--{boundary}--\r\n'.encode("utf8")
         return payload, boundary
 
-
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
         """
         Sends a raw payload to the Web interface.
