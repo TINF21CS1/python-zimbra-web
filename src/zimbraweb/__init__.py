@@ -3,12 +3,9 @@ from typing import Optional, Dict, Tuple, List
 from dataclasses import dataclass, astuple
 import uuid
 import re
-import base64
 import random
 import string
 import time
-
-from email.parser import Parser  # for parsing eml
 
 import requests
 
@@ -251,45 +248,6 @@ class ZimbraUser:
         payload += f'--{boundary}--\r\n'.encode("utf8")
         return payload, boundary
 
-    def generate_eml_payload(self, eml: str) -> Tuple[bytes, str]:
-        """Generate a payload from eml
-
-            Parameters:
-                eml: str
-
-            Returns:
-                bytes: The WebkitFormBoundary Payload
-                str: The boundary used in the payload
-        """
-
-        parser = Parser()
-        parsed = parser.parsestr(eml)
-
-        if type(parsed.get_payload()) == str:
-            return self.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
-
-        dict_mail = {}
-
-        dict_mail['to'] = parsed['To']
-        dict_mail['subject'] = parsed['Subject']
-        dict_mail['attachments'] = []
-
-        if type(parsed.get_payload()) == list:
-            for p in parsed.get_payload():
-                if type(p.get_payload()) == list:
-                    raise NotImplementedError()
-
-                if "attachment" not in p.get('Content-Disposition', ''):
-                    dict_mail['body'] = p.get_payload()
-
-                if "attachment" in p.get('Content-Disposition', ''):
-                    dict_mail['attachments'].append(WebkitAttachment(
-                        mimetype=p.get('Content-Type')[:p.get('Content-Type').find(";")],
-                        filename=re.findall('filename=\"(.*?)\"', p.get('Content-Disposition'))[0],
-                        content=base64.b64decode(p.get_payload())
-                    ))
-
-        return self.generate_webkit_payload(**dict_mail)
 
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
         """
