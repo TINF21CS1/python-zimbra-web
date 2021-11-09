@@ -76,18 +76,21 @@ def multipart_eml_parsing(user: ZimbraUser, payload: list, dict_mail: dict) -> d
     """
 
     for p in payload:
+        # multipart recursion
         if type(p.get_payload()) == list:
-            raise NotImplementedError()
-            #TODO recursive handling here!
+            dict_mail = multipart_eml_parsing(user, p.get_payload(), dict_mail)
 
-        if "attachment" not in p.get('Content-Disposition', ''):
-            dict_mail['body'] = p.get_payload()
+        else:
+            # body
+            if "attachment" not in p.get('Content-Disposition', ''):
+                dict_mail['body'] = p.get_payload()
 
-        if "attachment" in p.get('Content-Disposition', ''):
-            dict_mail['attachments'].append(WebkitAttachment(
-                mimetype=p.get('Content-Type')[:p.get('Content-Type').find(";")],
-                filename=re.findall('filename=\"(.*?)\"', p.get('Content-Disposition'))[0],
-                content=base64.b64decode(p.get_payload())
-            ))
+            # attachment
+            if "attachment" in p.get('Content-Disposition', ''):
+                dict_mail['attachments'].append(WebkitAttachment(
+                    mimetype=p.get('Content-Type')[:p.get('Content-Type').find(";")],
+                    filename=re.findall('filename=\"(.*?)\"', p.get('Content-Disposition'))[0],
+                    content=base64.b64decode(p.get_payload())
+                ))
 
     return dict_mail
