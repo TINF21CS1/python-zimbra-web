@@ -1,4 +1,4 @@
-from zimbraweb import Response, ZimbraUser, WebkitAttachment
+from zimbraweb import ZimbraUser, WebkitAttachment
 import os
 import pkg_resources
 
@@ -42,6 +42,7 @@ def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
 
+
 def test_send_outlookeml(zimbra_user: ZimbraUser, identifier: str):
     eml = pkg_resources.resource_stream(__name__, "templates/outlookmail.eml").read().decode("utf8")
     payload, boundary = zimbra_user.generate_eml_payload(eml)
@@ -49,7 +50,7 @@ def test_send_outlookeml(zimbra_user: ZimbraUser, identifier: str):
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
 
-    
+
 def test_logout(zimbra_user: ZimbraUser, identifier: str):
     assert zimbra_user.logout()
     response = zimbra_user.send_mail(f"{zimbra_user.session_data.username}@student.dhbw-mannheim.de",
