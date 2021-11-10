@@ -43,10 +43,13 @@ def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
         elif len(dict_mail['body']) == 1:  # one body
             dict_mail['body'] = dict_mail['body'][0].get_payload()
         elif len(dict_mail['body']) > 1:  # more than one body
+            c = False
             for b in dict_mail['body']:
                 if b.get('Content-Type')[:b.get('Content-Type').find(";")] == "text/plain":
-                    body = b.get_payload()
-            dict_mail['body'] = body
+                    dict_mail['body'] = b.get_payload()
+                    c = True
+            if not c:
+                raise NotImplementedError("No Plain body found")
 
         return user.generate_webkit_payload(**dict_mail)
 
