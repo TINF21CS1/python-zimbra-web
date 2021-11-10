@@ -53,7 +53,7 @@ def test_attachment_too_large(zimbra_user: ZimbraUser, identifier: str):
 
 def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
     eml = pkg_resources.resource_stream(__name__, "templates/simplemail.eml").read().decode("utf8")
-    payload, boundary = zimbraweb.emlparsing.plain_eml_parsing(zimbra_user, eml)
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
     response = zimbra_user.send_raw_payload(payload, boundary)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
@@ -61,7 +61,7 @@ def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
 
 def test_send_outlookeml(zimbra_user: ZimbraUser, identifier: str):
     eml = pkg_resources.resource_stream(__name__, "templates/outlookmail.eml").read().decode("utf8")
-    payload, boundary = zimbraweb.emlparsing.eml_parsing(zimbra_user, eml)
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
     response = zimbra_user.send_raw_payload(payload, boundary)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."
@@ -69,7 +69,7 @@ def test_send_outlookeml(zimbra_user: ZimbraUser, identifier: str):
 
 def test_send_attachmenteml(zimbra_user: ZimbraUser, identifier: str):
     eml = pkg_resources.resource_stream(__name__, "templates/attachmentmail.eml").read().decode("utf8")
-    payload, boundary = zimbraweb.emlparsing.eml_parsing(zimbra_user, eml)
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
     response = zimbra_user.send_raw_payload(payload, boundary)
     assert response.success
     assert response.message == "Ihre Mail wurde gesendet."

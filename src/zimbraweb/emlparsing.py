@@ -1,21 +1,22 @@
-from typing import Tuple
+from typing import Tuple, List, Dict, Any
 import re
 import base64
 
 from email.parser import Parser
-from zimbraweb import ZimbraUser, WebkitAttachment  # for parsing eml
+import email
+from zimbraweb import ZimbraUser, WebkitAttachment
 
 
-def eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
+def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
     """Generate a payload from any eml
 
-        Parameters:
-            user: ZimbraUser Class
-            eml: str
+    Args:
+        user (ZimbraUser): Zimbra user that sent the eml
+        eml (str): str
 
-        Returns:
-            bytes: The WebkitFormBoundary Payload
-            str: The boundary used in the payload
+    Returns:
+        bytes: The WebkitFormBoundary Payload
+        str: The boundary used in the payload
     """
 
     parser = Parser()
@@ -29,51 +30,28 @@ def eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
         dict_mail['to'] = parsed['To']
         dict_mail['subject'] = parsed['Subject']
         dict_mail['attachments'] = []
-        return user.generate_webkit_payload(**multipart_eml_parsing(user, parsed.get_payload(), dict_mail))
+        return user.generate_webkit_payload(**parse_multipart_eml(user, parsed.get_payload(), dict_mail))
 
     else:
-        raise TypeError("Multipart Payload in Plain Parser. Please use multipart_eml_parsing")
+        raise TypeError()
 
 
-def plain_eml_parsing(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
-    # right now this function is useless, since its so short and basically needs to be done for eml_parsing function anyway
-    """Generate a payload from plaintext eml
-
-        Parameters:
-            user: ZimbraUser Class
-            eml: str
-
-        Returns:
-            bytes: The WebkitFormBoundary Payload
-            str: The boundary used in the payload
-    """
-
-    parser = Parser()
-    parsed = parser.parsestr(eml)
-
-    # this if is not strictly necessary, but prevents from calling the plain function for multipart messages
-    if type(parsed.get_payload()) == str:
-        return user.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
-    else:
-        raise TypeError("Multipart Payload in Plain Parser. Please use multipart_eml_parsing")
-
-
-def multipart_eml_parsing(user: ZimbraUser, payload: list, dict_mail: dict) -> dict:
-    # TODO correct the types, its not a list but a list of email message objects
+def parse_multipart_eml(user: ZimbraUser, payload: List[email.message.Message], dict_mail: Dict[str, Any]) -> Dict[str, Any]:
     """Generate a dictionary of multipart-parts form a multipart email payload
 
-        Parameters:
-            parsedcontent (dict): an existing dictionary, key 'body' contains the body, key 'attachments' contains a [WebkitAttachments] list of attachments
-            payload (list): list of email message objects
+    Args:
+        user (ZimbraUser): Zimbra user that sent the eml
+        parsedcontent (dict): an existing dictionary, key 'body' contains the body, key 'attachments' contains a [WebkitAttachments] list of attachments
+        payload (list): list of email message objects
 
-        Returns:
-            dict: A dictionary with body and attachments
+    Returns:
+        dict: A dictionary with body and attachments
     """
 
     for p in payload:
         # multipart recursion
         if type(p.get_payload()) == list:
-            dict_mail = multipart_eml_parsing(user, p.get_payload(), dict_mail)
+            dict_mail = parse_multipart_eml(user, p.get_payload(), dict_mail)
 
         else:
             # body
