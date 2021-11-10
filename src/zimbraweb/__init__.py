@@ -232,6 +232,7 @@ class ZimbraUser:
 
         boundary = "----WebKitFormBoundary" + ''.join(random.sample(string.ascii_letters + string.digits, 16))
 
+        # adding the send action
         payload = f'--{boundary}\r\nContent-Disposition: form-data; name="actionSend"\r\n\r\nSenden\r\n'.encode("utf8")
 
         for attachment in attachments:
@@ -243,6 +244,7 @@ class ZimbraUser:
         for prop_name, prop_value in mail_props.items():
             payload += f'--{boundary}\r\nContent-Disposition: form-data; name="{prop_name}"\r\n\r\n{prop_value}\r\n'.encode("utf8")
 
+        # adding last boundary
         payload += f'--{boundary}--\r\n'.encode("utf8")
         return payload, boundary
 

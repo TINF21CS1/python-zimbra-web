@@ -3,6 +3,7 @@ import pkg_resources
 
 import pytest
 from zimbraweb import ZimbraUser, WebkitAttachment
+import zimbraweb.emlparsing
 
 
 def test_failing_authentication():
@@ -48,6 +49,30 @@ def test_attachment_too_large(zimbra_user: ZimbraUser, identifier: str):
                                      "[PYTEST] Attachment Test", f"{identifier}This email is too large!", attachments=attachments)
     assert not response.success
     assert response.message == "Anhang ist zu groß."
+
+
+def test_send_plaineml(zimbra_user: ZimbraUser, identifier: str):
+    eml = pkg_resources.resource_stream(__name__, "templates/simplemail.eml").read().decode("utf8")
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
+    response = zimbra_user.send_raw_payload(payload, boundary)
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
+
+
+def test_send_outlookeml(zimbra_user: ZimbraUser, identifier: str):
+    eml = pkg_resources.resource_stream(__name__, "templates/outlookmail.eml").read().decode("utf8")
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
+    response = zimbra_user.send_raw_payload(payload, boundary)
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
+
+
+def test_send_attachmenteml(zimbra_user: ZimbraUser, identifier: str):
+    eml = pkg_resources.resource_stream(__name__, "templates/attachmentmail.eml").read().decode("utf8")
+    payload, boundary = zimbraweb.emlparsing.parse_eml(zimbra_user, eml)
+    response = zimbra_user.send_raw_payload(payload, boundary)
+    assert response.success
+    assert response.message == "Ihre Mail wurde gesendet."
 
 
 def test_logout(zimbra_user: ZimbraUser, identifier: str):
