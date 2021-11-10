@@ -46,8 +46,9 @@ def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
             c = False
             for b in dict_mail['body']:
                 if b.get('Content-Type')[:b.get('Content-Type').find(";")] == "text/plain":
-                    dict_mail['body'] = b.get_payload()
+                    body = b.get_payload()
                     c = True
+            dict_mail['body'] = body
             if not c:
                 raise NotImplementedError("No Plain body found")
 
