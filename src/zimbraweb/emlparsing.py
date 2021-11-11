@@ -26,11 +26,11 @@ def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
     if parsed.get('Content-Type')[:parsed.get('Content-Type').find(";")] == 'multipart/report':
         return user.generate_webkit_payload(parsed['To'], subject="Undelivered Mail returned to sender.",
             body="A message you sent could not be delivered. Please see the attachment message for the full report.",
-            attachments=WebkitAttachment(
+            attachments=[WebkitAttachment(
                 mimetype="message/rfc822",
                 filename="bounce.eml",
-                content=bytes(eml)
-                )
+                content=bytes(eml, encoding="utf8")
+                )]
             )
 
     elif type(parsed.get_payload()) == str:
