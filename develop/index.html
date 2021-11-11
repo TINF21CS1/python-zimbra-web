@@ -50,6 +50,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="zimbraweb.html">zimbraweb package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="zimbraweb.html#module-zimbraweb">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zimbraweb.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zimbraweb.html#module-zimbraweb.emlparsing">zimbraweb.emlparsing module</a></li>
 </ul>
 </li>
 </ul>
@@ -67,6 +69,19 @@ E-mails within a single session.</p>
 <span class="n">user</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
 </pre></div>
 </div>
+<section id="sending-emls">
+<h3>Sending EMLs<a class="headerlink" href="#sending-emls" title="Permalink to this headline">¶</a></h3>
+<p>Please note the <a class="reference external" href="#known-limitations">Limitations</a> when trying to
+parse EML.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">zimbraweb</span> <span class="kn">import</span> <span class="n">ZimbraUser</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">ZimbraUser</span><span class="p">(</span><span class="s2">&quot;https://myzimbra.server&quot;</span><span class="p">)</span>
+<span class="n">user</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s2">&quot;s000000&quot;</span><span class="p">,</span> <span class="s2">&quot;hunter2&quot;</span><span class="p">)</span>
+<span class="n">emlstr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myemlfile.eml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">user</span><span class="o">.</span><span class="n">send_eml</span><span class="p">(</span><span class="n">emlstr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="sending-raw-webkitpayloads">
 <h3>Sending raw WebkitPayloads<a class="headerlink" href="#sending-raw-webkitpayloads" title="Permalink to this headline">¶</a></h3>
 <p>If you don’t want to rely on us to generate the payload, you can
@@ -107,7 +122,21 @@ generate a payload yourself and send it using <a class="reference internal" href
 <section id="known-limitations">
 <h2>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Emoji is not supported, even though other UTF-8 characters are.</p></li>
+<li><p>Emoji is not supported, even though other UTF-8 characters are. See
+Issue #3</p></li>
+<li><p>This package is made with German UIs in mind. If your UI is in a
+different language, feel free to fork and adjust the
+language-specific strings as needed. <a class="reference external" href="https://github.com/cirosec-studis/python-zimbra-web/issues/43">Issue
+#43</a></p></li>
+<li><p>The EML parsing can strictly only parse plaintext emails, optionally
+with attachments. Any emails with a Content-Type other than
+<code class="docutils literal notranslate"><span class="pre">text/plain</span></code> or <code class="docutils literal notranslate"><span class="pre">multipart/mixed</span></code> will be rejected. This is
+because the zimbra web interface does not allow HTML emails. Parsing
+<code class="docutils literal notranslate"><span class="pre">multipart/mixed</span></code> will only succeed if there is exactly one
+<code class="docutils literal notranslate"><span class="pre">text/plain</span></code> part and, optionally, attachments with the
+<code class="docutils literal notranslate"><span class="pre">Content-Disposition:</span> <span class="pre">attachment</span></code> header. If there are any
+<code class="docutils literal notranslate"><span class="pre">multipart/alternative</span></code> parts, the parsing will fail because we
+cannot deliver them to the Zimbra web interface.</p></li>
 </ul>
 </section>
 </section>

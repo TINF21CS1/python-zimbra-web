@@ -251,6 +251,20 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.send_eml">
+<span class="sig-name descname"><span class="pre">send_eml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#zimbraweb.Response" title="zimbraweb.Response"><span class="pre">zimbraweb.Response</span></a></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.send_eml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to send an email from a .eml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eml</strong> (<em>str</em>) – The EML string to send</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A zimbraweb.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="zimbraweb.ZimbraUser.send_mail">
 <span class="sig-name descname"><span class="pre">send_mail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><span class="pre">zimbraweb.WebkitAttachment</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#zimbraweb.Response" title="zimbraweb.Response"><span class="pre">zimbraweb.Response</span></a></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.send_mail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends an email as the current user.</p>
@@ -300,6 +314,50 @@ and response.success = True if the email was sent successfully.</p>
 </dd></dl>
 
 </section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-zimbraweb.emlparsing">
+<span id="zimbraweb-emlparsing-module"></span><h2>zimbraweb.emlparsing module<a class="headerlink" href="#module-zimbraweb.emlparsing" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.ContentTypeNotSupportedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">ContentTypeNotSupportedError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.ContentTypeNotSupportedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="zimbraweb.emlparsing.UnsupportedEMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">zimbraweb.emlparsing.UnsupportedEMLError</span></code></a></p>
+<p>Exception for unsupported content types</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.MissingHeadersError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">MissingHeadersError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.MissingHeadersError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="zimbraweb.emlparsing.UnsupportedEMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">zimbraweb.emlparsing.UnsupportedEMLError</span></code></a></p>
+<p>Exception for missing headers</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.UnsupportedEMLError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">UnsupportedEMLError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception for unsupported EML</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.parse_eml">
+<span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">parse_eml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.emlparsing.parse_eml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary for generate_payload() from an EML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eml</strong> (<em>str</em>) – The EML string to parse.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of the parsed EML file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Union[str, List[<a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment">WebkitAttachment</a>]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -322,6 +380,8 @@ and response.success = True if the email was sent successfully.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">zimbraweb package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-zimbraweb">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-zimbraweb.emlparsing">zimbraweb.emlparsing module</a></li>
 </ul>
 </li>
 </ul>
