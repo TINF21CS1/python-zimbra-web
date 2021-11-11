@@ -1,92 +1,64 @@
-from typing import Tuple, List, Dict, Any
-import re
-import base64
-
+from typing import List, Dict, Union, Any
 from email.parser import Parser
-import email
-from zimbraweb import ZimbraUser, WebkitAttachment
+
+import zimbraweb
 
 
-def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
-    """Generate a payload from any eml
-
-    Args:
-        user (ZimbraUser): Zimbra user that sent the eml
-        eml (str): str
-
-    Returns:
-        bytes: The WebkitFormBoundary Payload
-        str: The boundary used in the payload
-    """
-
-    parser = Parser()
-    parsed = parser.parsestr(eml)
-
-    if type(parsed.get_payload()) == str:
-        return user.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
-
-    elif type(parsed.get_payload()) == list:
-        dict_mail = {}
-        dict_mail['to'] = parsed['To']
-        dict_mail['subject'] = parsed['Subject']
-        dict_mail['body'] = []  # we later only want one entry in body, but first we collect all body entries to then get the one we want
-        dict_mail['attachments'] = []
-
-        # parsing body and attachments to dictionary
-        dict_mail = parse_multipart_eml(user, parsed.get_payload(), dict_mail)
-
-        # at this point dict_mail['body'] is a list of email.message.Message objects
-
-        # parsing bodies
-        if len(dict_mail['body']) == 0:  # no body
-            dict_mail['body'] = ""
-        elif len(dict_mail['body']) == 1:  # one body
-            dict_mail['body'] = dict_mail['body'][0].get_payload()
-        elif len(dict_mail['body']) > 1:  # more than one body
-            c = False
-            for b in dict_mail['body']:
-                if b.get('Content-Type')[:b.get('Content-Type').find(";")] == "text/plain":
-                    body = b.get_payload()
-                    c = True
-            dict_mail['body'] = body
-            if not c:
-                raise NotImplementedError("No Plain body found")
-
-        return user.generate_webkit_payload(**dict_mail)
-
-    else:
-        raise TypeError()
-        # dont know when this happens, but just to be sure
+class UnsupportedEMLError(Exception):
+    """Exception for unsupported EML"""
+    pass
 
 
-def parse_multipart_eml(user: ZimbraUser, payload: List[email.message.Message], dict_mail: Dict[str, Any]) -> Dict[str, Any]:
-    """Generate a dictionary of multipart-parts form a multipart email payload
+class MissingHeadersError(UnsupportedEMLError):
+    """Exception for missing headers"""
+    pass
+
+
+class ContentTypeNotSupportedError(UnsupportedEMLError):
+    """Exception for unsupported content types"""
+    pass
+
+
+def parse_eml(eml: str) -> Dict[str, Union[str, List[Any]]]:
+    """Generate a dictionary for generate_payload() from an EML file.
 
     Args:
-        user (ZimbraUser): Zimbra user that sent the eml
-        parsedcontent (dict): an existing dictionary, key 'body' contains the body, key 'attachments' contains a [WebkitAttachments] list of attachments
-        payload (list): list of email message objects
+        eml (str): The EML string to parse.
 
     Returns:
-        dict: A dictionary with body and attachments
+        Dict[str, Union[str, List[WebkitAttachment]]]: A dictionary of the parsed EML file.
     """
+    parsed = Parser().parsestr(eml)
+    out = {}
+    for header_name, header_value in parsed.items():
+        out[header_name.lower()] = header_value
+    if "to" not in out:
+        raise MissingHeadersError("Missing 'To' header")
+    if "subject" not in out:
+        raise MissingHeadersError("Missing 'Subject' header")
 
-    for p in payload:
-        # multipart recursion
-        if type(p.get_payload()) == list:
-            dict_mail = parse_multipart_eml(user, p.get_payload(), dict_mail)
-
-        else:
-            # body
-            if "attachment" not in p.get('Content-Disposition', ''):
-                dict_mail['body'].append(p)
-
-            # attachment
-            if "attachment" in p.get('Content-Disposition', ''):
-                dict_mail['attachments'].append(WebkitAttachment(
-                    mimetype=p.get('Content-Type')[:p.get('Content-Type').find(";")],
-                    filename=re.findall('filename=\"(.*?)\"', p.get('Content-Disposition'))[0],
-                    content=base64.b64decode(p.get_payload())
+    ct = parsed.get_content_type()
+    if ct == "text/plain":
+        out["body"] = parsed.get_payload()
+    elif ct == "multipart/mixed":
+        out["attachments"] = []
+        for part in parsed.get_payload():
+            if part.get_content_disposition() == "attachment":
+                out["attachments"].append(zimbraweb.WebkitAttachment(
+                    mimetype=part.get_content_type(),
+                    filename=part.get_filename(),
+                    content=part.get_payload(decode=True)
                 ))
+            else:
+                if part.get_content_type() == "text/plain":
+                    if "body" in out:  # we already have a body
+                        raise UnsupportedEMLError("EML contains more than one plaintext body")
+                    out["body"] = part.get_payload(decode=True).decode(part.get_content_charset())
+                else:
+                    raise UnsupportedEMLError(f"EML contains unsupported content type: {part.get_content_type()}")
+        if "body" not in out:
+            out["body"] = ""
+    else:
+        raise ContentTypeNotSupportedError(f"Content-Type: {ct} not supported")
 
-    return dict_mail
+    return out

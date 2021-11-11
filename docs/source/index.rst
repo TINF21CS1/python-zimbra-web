@@ -42,6 +42,21 @@ E-mails within a single session.
    user.send_mail(to="receiver@example.com", subject="subject", body="body", cc="cc@example.com")
    user.logout()
 
+Sending EMLs
+~~~~~~~~~~~~
+
+Please note the `Limitations <#known-limitations>`__ when trying to
+parse EML.
+
+.. code:: python
+
+   from zimbraweb import ZimbraUser
+
+   user = ZimbraUser("https://myzimbra.server")
+   user.login("s000000", "hunter2")
+   emlstr = open("myemlfile.eml").read()
+   user.send_eml(emlstr)
+
 Sending raw WebkitPayloads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -85,4 +100,18 @@ You can generate attachments using the :meth:`zimbraweb.WebkitAttachment` class:
 Known Limitations
 -----------------
 
--  Emoji is not supported, even though other UTF-8 characters are.
+-  Emoji is not supported, even though other UTF-8 characters are. See
+   Issue #3
+-  This package is made with German UIs in mind. If your UI is in a
+   different language, feel free to fork and adjust the
+   language-specific strings as needed. `Issue
+   #43 <https://github.com/cirosec-studis/python-zimbra-web/issues/43>`__
+-  The EML parsing can strictly only parse plaintext emails, optionally
+   with attachments. Any emails with a Content-Type other than
+   ``text/plain`` or ``multipart/mixed`` will be rejected. This is
+   because the zimbra web interface does not allow HTML emails. Parsing
+   ``multipart/mixed`` will only succeed if there is exactly one
+   ``text/plain`` part and, optionally, attachments with the
+   ``Content-Disposition: attachment`` header. If there are any
+   ``multipart/alternative`` parts, the parsing will fail because we
+   cannot deliver them to the Zimbra web interface.

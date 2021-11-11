@@ -9,6 +9,8 @@ import time
 
 import requests
 
+import zimbraweb.emlparsing
+
 __version__ = '1.1.0'
 
 
@@ -247,6 +249,21 @@ class ZimbraUser:
         # adding last boundary
         payload += f'--{boundary}--\r\n'.encode("utf8")
         return payload, boundary
+
+    def send_eml(self, eml: str) -> Response:
+        """
+        Tries to send an email from a .eml file.
+
+        Args:
+            eml (str): The EML string to send
+
+        Returns:
+            A zimbraweb.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.
+        """
+
+        # mypy doesn't like the dict unpacking because it cannot check the types.
+        payload, boundary = self.generate_webkit_payload(**zimbraweb.emlparsing.parse_eml(eml))  # type: ignore
+        return self.send_raw_payload(payload=payload, boundary=boundary)
 
     def send_raw_payload(self, payload: bytes, boundary: str) -> Response:
         """
