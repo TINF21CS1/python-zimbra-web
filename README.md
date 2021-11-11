@@ -80,7 +80,7 @@ user.logout()
 ## Install
 
 ```
-pip install git+https://github.com/cirosec-studis/python-zimbra-web/
+pip install zimbraweb
 ```
 
 ## Contributing
@@ -96,8 +96,10 @@ pip install git+https://github.com/cirosec-studis/python-zimbra-web/
 
 ### Development Install
 
-```python
-pip install -e .
+```bash
+$ git clone https://github.com/cirosec-studis/python-zimbra-web/
+$ cd python-zimbra-web
+$ pip install -e .
 ```
 
 This installs the package with symlink, so the package is automatically updated, when files are changed.
