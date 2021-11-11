@@ -6,7 +6,7 @@
 
 ## Usage
 
-For the entire documentation please see [https://cirosec-studis.github.io/python-zimbra-web](https://cirosec-studis.github.io/python-zimbra-web]).
+For the entire documentation please see [https://cirosec-studis.github.io/python-zimbra-web](https://cirosec-studis.github.io/python-zimbra-web).
 
 The documentation for the develop branch can be found here: [https://cirosec-studis.github.io/python-zimbra-web/develop/](https://cirosec-studis.github.io/python-zimbra-web/develop)
 
