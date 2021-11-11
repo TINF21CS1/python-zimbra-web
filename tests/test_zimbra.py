@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import os
 import pkg_resources
 import uuid
-=======
-from zimbra import ZimbraUser, WebkitAttachment
-import os
-import pkg_resources
->>>>>>> main
 
 import pytest
 from zimbraweb import ZimbraUser, WebkitAttachment, emlparsing
