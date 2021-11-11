@@ -22,7 +22,18 @@ def parse_eml(user: ZimbraUser, eml: str) -> Tuple[bytes, str]:
     parser = Parser()
     parsed = parser.parsestr(eml)
 
-    if type(parsed.get_payload()) == str:
+    # this filters out bounce messages and handles them differently
+    if parsed.get('Content-Type')[:parsed.get('Content-Type').find(";")] == 'multipart/report':
+        return user.generate_webkit_payload(parsed['To'], subject="Undelivered Mail returned to sender.",
+            body="A message you sent could not be delivered. Please see the attachment message for the full report.",
+            attachments=WebkitAttachment(
+                mimetype="message/rfc822",
+                filename="bounce.eml",
+                content=bytes(eml)
+                )
+            )
+
+    elif type(parsed.get_payload()) == str:
         return user.generate_webkit_payload(parsed['To'], parsed['Subject'], parsed.get_payload())
 
     elif type(parsed.get_payload()) == list:
