@@ -1,28 +1,44 @@
-# Python Zimbra
+# Python Zimbra Web
 | branch    | status           |
 |-----------|------------------|
-| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) | 
-| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra/actions/workflows/tests.yml) |
+| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) | 
+| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) |
 
 ## Usage
+
+For the entire documentation please see [https://cirosec-studis.github.io/python-zimbra-web](https://cirosec-studis.github.io/python-zimbra-web]).
+
+The documentation for the develop branch can be found here: [https://cirosec-studis.github.io/python-zimbra-web/develop/](https://cirosec-studis.github.io/python-zimbra-web/develop)
 
 You can use `ZimbraUser` to send E-mails. You can send multiple E-mails within a single session.
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
 user.send_mail(to="receiver@example.com", subject="subject", body="body", cc="cc@example.com")
 user.logout()
 ```
+### Sending EMLs
+Please note the [Limitations](#known-limitations) when trying to parse EML.
+
+```python
+from zimbraweb import ZimbraUser
+
+user = ZimbraUser("https://myzimbra.server")
+user.login("s000000", "hunter2")
+emlstr = open("myemlfile.eml").read()
+user.send_eml(emlstr)
+```
+
 
 ### Sending raw WebkitPayloads
 
 If you don't want to rely on us to generate the payload, you can generate a payload yourself and send it using
 
 ```python
-from zimbra import ZimbraUser
+from zimbraweb import ZimbraUser
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -42,7 +58,7 @@ user.logout()
 You can generate attachments using the `WebkitAttachment` class:
 
 ```python
-from zimbra import ZimbraUser, WebkitAttachment
+from zimbraweb import ZimbraUser, WebkitAttachment
 
 user = ZimbraUser("https://myzimbra.server")
 user.login("s000000", "hunter2")
@@ -58,11 +74,13 @@ user.logout()
 ## Known Limitations
 
 * Emoji is not supported, even though other UTF-8 characters are. See Issue #3
+* This package is made with German UIs in mind. If your UI is in a different language, feel free to fork and adjust the language-specific strings as needed. [Issue #43](https://github.com/cirosec-studis/python-zimbra-web/issues/43)
+* The EML parsing can strictly only parse plaintext emails, optionally with attachments. Any emails with a Content-Type other than `text/plain` or `multipart/mixed` will be rejected. This is because the zimbra web interface does not allow HTML emails. Parsing `multipart/mixed` will only succeed if there is exactly one `text/plain` part and, optionally, attachments with the `Content-Disposition: attachment` header. If there are any `multipart/alternative` parts, the parsing will fail because we cannot deliver them to the Zimbra web interface.
 
 ## Install
 
 ```
-pip install git+https://github.com/cirosec-studis/python-zimbra/
+pip install zimbraweb
 ```
 
 ## Contributing
@@ -78,8 +96,10 @@ pip install git+https://github.com/cirosec-studis/python-zimbra/
 
 ### Development Install
 
-```python
-pip install -e .
+```bash
+$ git clone https://github.com/cirosec-studis/python-zimbra-web/
+$ cd python-zimbra-web
+$ pip install -e .
 ```
 
 This installs the package with symlink, so the package is automatically updated, when files are changed.
