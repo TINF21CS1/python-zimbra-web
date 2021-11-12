@@ -39,7 +39,7 @@ def parse_eml(eml: str) -> Dict[str, Union[str, List[Any]]]:
 
     ct = parsed.get_content_type()
     if ct == "text/plain":
-        out["body"] = parsed.get_payload()
+        out["body"] = parsed.get_payload(decode=True).decode(parsed.get_content_charset())
     elif ct == "multipart/mixed":
         out["attachments"] = []
         for part in parsed.get_payload():
