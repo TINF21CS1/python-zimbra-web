@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>zimbraweb package &#8212; Python Zimbra Web 2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Python Zimbra Web’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="zimbraweb-package">
+<h1>zimbraweb package<a class="headerlink" href="#zimbraweb-package" title="Permalink to this headline">¶</a></h1>
+<section id="module-zimbraweb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-zimbraweb" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="zimbraweb.Response">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">success</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#zimbraweb.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class to return a success bool and a status message.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="zimbraweb.SessionData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.</span></span><span class="sig-name descname"><span class="pre">SessionData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsessionid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crumb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#zimbraweb.SessionData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds all authentication session data for a single Zimbra web user.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#zimbraweb.SessionData.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>A ZM_AUTH_TOKEN cookie, if authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.expires">
+<span class="sig-name descname"><span class="pre">expires</span></span><a class="headerlink" href="#zimbraweb.SessionData.expires" title="Permalink to this definition">¶</a></dt>
+<dd><p>The unixtime expiration date of the auth token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.jsessionid">
+<span class="sig-name descname"><span class="pre">jsessionid</span></span><a class="headerlink" href="#zimbraweb.SessionData.jsessionid" title="Permalink to this definition">¶</a></dt>
+<dd><p>A JSESSIONID cookie, if a session has been opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#zimbraweb.SessionData.username" title="Permalink to this definition">¶</a></dt>
+<dd><p>The username of the authenticated user, if authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.from_address">
+<span class="sig-name descname"><span class="pre">from_address</span></span><a class="headerlink" href="#zimbraweb.SessionData.from_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default sender address used by the Zimbra web interface, if authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.crumb">
+<span class="sig-name descname"><span class="pre">crumb</span></span><a class="headerlink" href="#zimbraweb.SessionData.crumb" title="Permalink to this definition">¶</a></dt>
+<dd><p>The validation crumb needed to generate payloads, if authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.as_cookies">
+<span class="sig-name descname"><span class="pre">as_cookies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.SessionData.as_cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containting ZM_TEST, ZM_AUTH_TOKEN, JSESSIONID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.SessionData.is_valid">
+<span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#zimbraweb.SessionData.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if no attributes are None and auth token is still valid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="zimbraweb.WebkitAttachment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.</span></span><span class="sig-name descname"><span class="pre">WebkitAttachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#zimbraweb.WebkitAttachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a single attachment for WebkitFormBoundary data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.WebkitAttachment.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#zimbraweb.WebkitAttachment.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the attachment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.WebkitAttachment.mimetype">
+<span class="sig-name descname"><span class="pre">mimetype</span></span><a class="headerlink" href="#zimbraweb.WebkitAttachment.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Mimetype, e.g. image/jpeg.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="zimbraweb.WebkitAttachment.content">
+<span class="sig-name descname"><span class="pre">content</span></span><a class="headerlink" href="#zimbraweb.WebkitAttachment.content" title="Permalink to this definition">¶</a></dt>
+<dd><p>The raw bytes of the attachment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.</span></span><span class="sig-name descname"><span class="pre">ZimbraUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#zimbraweb.ZimbraUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class represent a single user instance on the Zimbra Web Interface.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.authenticated">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">authenticated</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#zimbraweb.ZimbraUser.authenticated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the user authenticated with the web client?</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.generate_webkit_payload">
+<span class="sig-name descname"><span class="pre">generate_webkit_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><span class="pre">zimbraweb.WebkitAttachment</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.generate_webkit_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a WebkitFormBoundary payload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to</strong> (<em>str</em>) – Recipient.</p></li>
+<li><p><strong>subject</strong> (<em>str</em>) – Email Subject Header.</p></li>
+<li><p><strong>body</strong> (<em>str</em>) – plain/text email body.</p></li>
+<li><p><strong>attachments</strong> (<em>List</em><em>[</em><a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><em>zimbraweb.WebkitAttachment</em></a><em>]</em>) – List of attachments to add to the payload.</p></li>
+<li><p><strong>**kwargs</strong> – Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Tuple (payload [bytes], boundary [str])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.get_mail_info">
+<span class="sig-name descname"><span class="pre">get_mail_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.get_mail_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a valid crumb and from header to send an email</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Returns:</dt><dd><p>Optional[Dict[str, str]]: {‘crumb’: ‘xxx’, ‘from_header’: <a class="reference external" href="mailto:'s00000&#37;&#52;&#48;domain&#46;com">‘s00000<span>&#64;</span>domain<span>&#46;</span>com</a>’} or None</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.get_session_id">
+<span class="sig-name descname"><span class="pre">get_session_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.get_session_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a new session id for the current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A new JESSIONID or None if an error occurred.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an authentication token from the Zimbra Web Client using username and password as authentication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – username to use for web authentication, without domain</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – password to use for web authentication</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if authentication was successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs the user out of the web client and invalidates any session data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if logout was successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.send_eml">
+<span class="sig-name descname"><span class="pre">send_eml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#zimbraweb.Response" title="zimbraweb.Response"><span class="pre">zimbraweb.Response</span></a></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.send_eml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to send an email from a .eml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eml</strong> (<em>str</em>) – The EML string to send</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A zimbraweb.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.send_mail">
+<span class="sig-name descname"><span class="pre">send_mail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><span class="pre">zimbraweb.WebkitAttachment</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#zimbraweb.Response" title="zimbraweb.Response"><span class="pre">zimbraweb.Response</span></a></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.send_mail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an email as the current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to</strong> (<em>str</em>) – Recipient.</p></li>
+<li><p><strong>subject</strong> (<em>str</em>) – Email Subject Header.</p></li>
+<li><p><strong>body</strong> (<em>str</em>) – plain/text email body.</p></li>
+<li><p><strong>attachments</strong> (<em>List</em><em>[</em><a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment"><em>zimbraweb.WebkitAttachment</em></a><em>]</em>) – List of attachments to send with the email.</p></li>
+<li><p><strong>**kwargs</strong> – Extended Mail Parameters (cc, bcc, replyto, inreplyto, messageid) can be set via kwargs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A zimbraweb.Response object containing the status message of the server
+and response.success = True if the email was sent successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="zimbraweb.ZimbraUser.send_raw_payload">
+<span class="sig-name descname"><span class="pre">send_raw_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#zimbraweb.Response" title="zimbraweb.Response"><span class="pre">zimbraweb.Response</span></a></span></span><a class="headerlink" href="#zimbraweb.ZimbraUser.send_raw_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a raw payload to the Web interface.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">zimbraweb</span> <span class="kn">import</span> <span class="n">ZimbraUser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="n">ZimbraUser</span><span class="p">(</span><span class="s2">&quot;https://my-zimbra.server&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s2">&quot;xxx&quot;</span><span class="p">,</span> <span class="s2">&quot;xxx&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span><span class="p">,</span> <span class="n">boundary</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">generate_webkit_payload</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s2">&quot;hello@example.com&quot;</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;test mail&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;hello, world!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user</span><span class="o">.</span><span class="n">send_raw_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">boundary</span><span class="p">)</span>
+<span class="go">Response(success=True, status=&quot;Ihre Mail wurde gesendet.&quot;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>payload</strong> (<em>bytes</em>) – The payload to send in the body of the request</p></li>
+<li><p><strong>boundary</strong> (<em>str</em>) – The boundary that is used in the WebkitFormBoundary payload</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A zimbraweb.Response object with response.success == True if payload was sent successfully and the resposne message from the web client.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-zimbraweb.emlparsing">
+<span id="zimbraweb-emlparsing-module"></span><h2>zimbraweb.emlparsing module<a class="headerlink" href="#module-zimbraweb.emlparsing" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.ContentTypeNotSupportedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">ContentTypeNotSupportedError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.ContentTypeNotSupportedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="zimbraweb.emlparsing.UnsupportedEMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">zimbraweb.emlparsing.UnsupportedEMLError</span></code></a></p>
+<p>Exception for unsupported content types</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.MissingHeadersError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">MissingHeadersError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.MissingHeadersError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="zimbraweb.emlparsing.UnsupportedEMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">zimbraweb.emlparsing.UnsupportedEMLError</span></code></a></p>
+<p>Exception for missing headers</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.UnsupportedEMLError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">UnsupportedEMLError</span></span><a class="headerlink" href="#zimbraweb.emlparsing.UnsupportedEMLError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception for unsupported EML</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.parse_eml">
+<span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">parse_eml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.emlparsing.parse_eml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary for generate_payload() from an EML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eml</strong> (<em>str</em>) – The EML string to parse.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of the parsed EML file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Union[str, List[<a class="reference internal" href="#zimbraweb.WebkitAttachment" title="zimbraweb.WebkitAttachment">WebkitAttachment</a>]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Python Zimbra Web</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">zimbraweb package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-zimbraweb">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-zimbraweb.emlparsing">zimbraweb.emlparsing module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Python Zimbra Web’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Cirosec Studis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/zimbraweb.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
