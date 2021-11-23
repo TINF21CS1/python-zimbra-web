@@ -31,7 +31,7 @@ def parse_eml(eml: str) -> Dict[str, Union[str, List[Any]]]:
     parsed = Parser().parsestr(eml)
     out = {}
     for header_name, header_value in parsed.items():
-        out[header_name.lower()] = header_value
+        out[header_name.lower()] = header_value.replace("\n", "").replace("\r", "")
     if "to" not in out:
         raise MissingHeadersError("Missing 'To' header")
     if "subject" not in out:
