@@ -341,6 +341,20 @@ and response.success = True if the email was sent successfully.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="zimbraweb.emlparsing.is_parsable">
+<span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">is_parsable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#zimbraweb.emlparsing.is_parsable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check eml string for parsability</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eml</strong> (<em>str</em>) – The EML string to parse.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool if parse_eml() will throw an error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="zimbraweb.emlparsing.parse_eml">
 <span class="sig-prename descclassname"><span class="pre">zimbraweb.emlparsing.</span></span><span class="sig-name descname"><span class="pre">parse_eml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eml</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#zimbraweb.emlparsing.parse_eml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a dictionary for generate_payload() from an EML file.</p>
