@@ -73,9 +73,9 @@ def is_parsable(eml: str) -> bool:
     Returns:
         bool if parse_eml() will throw an error.
     """
-    
+
     try:
         parse_eml(eml)
         return True
-    except:
+    except UnsupportedEMLError:
         return False
