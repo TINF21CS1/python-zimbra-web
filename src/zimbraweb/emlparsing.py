@@ -62,3 +62,20 @@ def parse_eml(eml: str) -> Dict[str, Union[str, List[Any]]]:
         raise ContentTypeNotSupportedError(f"Content-Type: {ct} not supported")
 
     return out
+
+
+def is_parsable(eml: str) -> bool:
+    """Check eml string for parsability
+
+    Args:
+        eml (str): The EML string to parse.
+
+    Returns:
+        bool if parse_eml() will throw an error.
+    """
+    
+    try:
+        parse_eml(eml)
+        return True
+    except:
+        return False
