@@ -22,7 +22,7 @@ copyright = '2021, Cirosec Studis'
 author = 'Cirosec Studis'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0'
+release = '2.1'
 
 
 # -- General configuration ---------------------------------------------------
