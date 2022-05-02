@@ -105,7 +105,7 @@ Known Limitations
 -  This package is made with German UIs in mind. If your UI is in a
    different language, feel free to fork and adjust the
    language-specific strings as needed. `Issue
-   #43 <https://github.com/cirosec-studis/python-zimbra-web/issues/43>`__
+   #43 <https://github.com/TINF21CS1/python-zimbra-web/issues/43>`__
 -  The EML parsing can strictly only parse plaintext emails, optionally
    with attachments. Any emails with a Content-Type other than
    ``text/plain`` or ``multipart/mixed`` will be rejected. This is

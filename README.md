@@ -1,14 +1,14 @@
 # Python Zimbra Web
 | branch    | status           |
 |-----------|------------------|
-| main      | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) | 
-| develop   | [![Tests](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/cirosec-studis/python-zimbra-web/actions/workflows/tests.yml) |
+| main      | [![Tests](https://github.com/TINF21CS1/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/TINF21CS1/python-zimbra-web/actions/workflows/tests.yml) | 
+| develop   | [![Tests](https://github.com/TINF21CS1/python-zimbra-web/actions/workflows/tests.yml/badge.svg?branch=develop)](https://github.com/TINF21CS1/python-zimbra-web/actions/workflows/tests.yml) |
 
 ## Usage
 
-For the entire documentation please see [https://cirosec-studis.github.io/python-zimbra-web](https://cirosec-studis.github.io/python-zimbra-web).
+For the entire documentation please see [https://TINF21CS1.github.io/python-zimbra-web](https://TINF21CS1.github.io/python-zimbra-web).
 
-The documentation for the develop branch can be found here: [https://cirosec-studis.github.io/python-zimbra-web/develop/](https://cirosec-studis.github.io/python-zimbra-web/develop)
+The documentation for the develop branch can be found here: [https://TINF21CS1.github.io/python-zimbra-web/develop/](https://TINF21CS1.github.io/python-zimbra-web/develop)
 
 You can use `ZimbraUser` to send E-mails. You can send multiple E-mails within a single session.
 
@@ -74,7 +74,7 @@ user.logout()
 ## Known Limitations
 
 * Emoji is not supported, even though other UTF-8 characters are. See Issue #3
-* This package is made with German UIs in mind. If your UI is in a different language, feel free to fork and adjust the language-specific strings as needed. [Issue #43](https://github.com/cirosec-studis/python-zimbra-web/issues/43)
+* This package is made with German UIs in mind. If your UI is in a different language, feel free to fork and adjust the language-specific strings as needed. [Issue #43](https://github.com/TINF21CS1/python-zimbra-web/issues/43)
 * The EML parsing can strictly only parse plaintext emails, optionally with attachments. Any emails with a Content-Type other than `text/plain` or `multipart/mixed` will be rejected. This is because the zimbra web interface does not allow HTML emails. Parsing `multipart/mixed` will only succeed if there is exactly one `text/plain` part and, optionally, attachments with the `Content-Disposition: attachment` header. If there are any `multipart/alternative` parts, the parsing will fail because we cannot deliver them to the Zimbra web interface.
 
 ## Install
@@ -97,7 +97,7 @@ pip install zimbraweb
 ### Development Install
 
 ```bash
-$ git clone https://github.com/cirosec-studis/python-zimbra-web/
+$ git clone https://github.com/TINF21CS1/python-zimbra-web/
 $ cd python-zimbra-web
 $ pip install -e .
 ```
