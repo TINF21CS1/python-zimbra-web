@@ -11,7 +11,7 @@ import requests
 
 import zimbraweb.emlparsing
 
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 
 @dataclass
